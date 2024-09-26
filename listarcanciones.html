@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llistar Cançons</title>
+    <link rel="stylesheet" href="src/CSS/style.css">
+</head>
+<body>
+    <header class="header">
+        <a href="" class="logo">ᚠ</a>
+        <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
+    </header>
+
+    <div id="playlist-container">
+        <section id="play-song-list">
+            <!-- Las canciones se cargarán aquí -->
+        </section>
+    </div>
+
+    <script>
+        // Leer el archivo JSON y mostrar las canciones en divs
+        fetch('/src/php/playlist.json')  // Asegúrate de que la ruta sea correcta
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const songsList = document.querySelector('#play-song-list');
+                songsList.innerHTML = ''; // Limpiar cualquier contenido anterior
+
+                data.forEach(cancion => {
+                    const songContainer = document.createElement('div');
+                    songContainer.classList.add('play-song-item');
+
+                    const caratula = document.createElement('img');
+                    caratula.src = `/src/php/uploads/caratula/${cancion.archivoCaratula}`;
+                    caratula.alt = `Carátula de ${cancion.titulo}`;
+                    caratula.classList.add('song-img');
+
+
+                    const songInfo = document.createElement('div');
+                    songInfo.classList.add('play-song-info');
+                    songInfo.innerHTML = `
+                        <h2>${cancion.titulo}</h2>
+                        <p>de ${cancion.artista}</p>
+                    `;
+
+                    const audioPlayer = document.createElement('audio');
+                    audioPlayer.controls = true;
+                    const source = document.createElement('source');
+                    source.src = cancion.archivoMusica;
+                    source.type = "audio/mp3";
+                    audioPlayer.appendChild(source);
+                    audioPlayer.innerHTML = "Tu navegador no soporta el elemento de audio.";
+
+                    songContainer.appendChild(caratula);
+                    songContainer.appendChild(songInfo);
+                    songContainer.appendChild(audioPlayer);
+
+                    songsList.appendChild(songContainer);
+                });
+            })
+            .catch(error => {
+                console.error('Error al cargar el JSON:', error);
+                const songsList = document.querySelector('#play-song-list');
+                songsList.innerHTML = `<p>No se pudieron cargar las canciones: ${error.message}</p>`;
+            });
+    </script>
+
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+</body>
+</html>

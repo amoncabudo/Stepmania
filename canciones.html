@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Canciones</title>
+    <link rel="stylesheet" href="http://localhost:8080/src/CSS/style.css">
+
+</head>
+<body>
+    <!-- Encabezado con Logo y botón de inicio -->
+    <header class="header">
+        <a href="#" class="logo">ᚠ</a>
+        <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
+        </div>
+    </header>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Formulario para agregar nuevas canciones -->
+        <div class="form-container">
+            <h5>Agregar Nueva Canción</h5>
+            <form action="http://localhost:8080/src/PHP/addsong.php" method="POST" enctype="multipart/form-data">
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" required>
+
+                <label for="artista">Artista:</label>
+                <input type="text" id="artista" name="artista" required>
+
+                <label for="musica">Archivo MP3:</label>
+                <input type="file" id="musica-btn" name="musica" accept="audio/*" required>
+
+                <label for="caratula">Portada:</label>
+                <input type="file" id="caratula" name="caratula" accept="image/*" required>
+
+                <button type="submit">Agregar Canción</button>
+                <div id="message"></div> <!-- Para mostrar mensajes de error o éxito -->
+            </form>
+        </div>
+
+    <script>
+        // Cargar las canciones desde el archivo JSON y mostrar en la lista
+        fetch('src/php/playlist.json')
+            .then(response => response.json())
+            .then(data => {
+                const songsList = document.getElementById('songs');
+                songsList.innerHTML = '';
+
+                data.forEach(song => {
+                    const li = document.createElement('li');
+                    li.classList.add('song-item');
+
+                    li.innerHTML = `
+                        <img class="cover" src="${song.archivoCaratula}" alt="Carátula de ${song.titulo}">
+                        <div class="song-details">
+                            <strong>${song.titulo}</strong><br>
+                            <em>${song.artista}</em>
+                        </div>
+                        <div class="song-actions">
+                            <audio controls>
+                                <source src="${song.archivoMusica}" type="audio/mpeg">
+                                Tu navegador no soporta el elemento de audio.
+                            </audio>
+                            <button onclick="deleteSong('${song.titulo}')">Eliminar</button>
+                        </div>
+                    `;
+
+                    songsList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error al cargar las canciones:', error);
+            });
+
+        // Función para eliminar canción (en desarrollo)
+        function deleteSong(titulo) {
+            alert('Eliminar la canción: ' + titulo);
+            // Aquí puedes agregar la lógica para eliminar la canción del JSON y la interfaz
+        }
+    </script>
+       
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+</body>
+</html>
