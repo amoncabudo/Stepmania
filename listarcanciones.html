@@ -12,66 +12,91 @@
         <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
     </header>
 
-    <div id="playlist-container">
-        <section id="songsList">
-            <!-- Aquí se cargarán las canciones -->
-        </section>
-    </div>
+   <!-- Contenedor exclusivo para la playlist -->
+   <div id="playlist-container">
+    <section id="play-song-list">
+     
+<div id="songList"></div>
 
-    <script>
-        // Leer el archivo JSON y mostrar las canciones
-        fetch('src/PHP/playlist.json')  // Ruta correcta al archivo JSON
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al cargar el archivo JSON.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const songsList = document.querySelector('#songsList');
+<script>
+    // Función para generar colores aleatorios
+    function getRandomColor() {
+        const colors = ['green', 'yellow', 'red', 'blue', 'purple', 'orange', 'pink'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
 
-                data.forEach(cancion => {
-                    // Crear un contenedor para cada canción
-                    const songContainer = document.createElement('div');
-                    songContainer.classList.add('song-container');
+    // Función para generar un número aleatorio de círculos
+    function getRandomCircles() {
+        const circles = [];
+        const numCircles = Math.floor(Math.random() * 4) + 1;  // Genera entre 1 y 4 círculos
+        for (let i = 0; i < numCircles; i++) {
+            const circle = document.createElement('span');
+            circle.classList.add('circle');
+            circle.style.backgroundColor = getRandomColor();  // Asigna un color aleatorio
+            circles.push(circle);
+        }
+        return circles;
+    }
 
-                    // Crear la imagen de la carátula
-                    const caratula = document.createElement('img');
-                    caratula.src = 'src/PHP/' + cancion.archivoCaratula;  // Ruta a la carátula
-                    caratula.alt = `Carátula de ${cancion.titulo}`;
-                    caratula.classList.add('song-img');
+    // Leer el archivo JSON y mostrar las canciones
+    fetch('src/PHP/playlist.json')
+        .then(response => response.json())
+        .then(data => {
+            const songList = document.getElementById('play-song-list');
 
-                    // Crear el contenedor de información de la canción
-                    const songInfo = document.createElement('div');
-                    songInfo.classList.add('song-info');
-                    songInfo.innerHTML = `
-                        <h2>${cancion.titulo}</h2>
-                        <p>de ${cancion.artista}</p>
-                    `;
+            data.forEach(cancion => {
+                // Crear el contenedor principal con la clase adecuada
+                const songItem = document.createElement('div');
+                songItem.classList.add('play-song-item');  // Aplicar la clase CSS
 
-                    // Crear el reproductor de audio
-                    const audioPlayer = document.createElement('audio');
-                    audioPlayer.controls = true;
-                    const source = document.createElement('source');
-                    source.src = 'src/PHP/' + cancion.archivoMusica;  // Ruta al archivo de música
-                    source.type = "audio/mpeg";
-                    audioPlayer.appendChild(source);
-                    audioPlayer.innerHTML = "Tu navegador no soporta el elemento de audio.";
+                // Añadir la imagen de la carátula con la clase adecuada
+                const caratula = document.createElement('img');
+                caratula.src = 'src/PHP/' + cancion.archivoCaratula;  // Ruta a la carátula
+                caratula.alt = `Carátula de ${cancion.titulo}`;
+                caratula.classList.add('song-img');  // Aplicar la clase CSS
 
-                    // Añadir los elementos al contenedor de la canción
-                    songContainer.appendChild(caratula);
-                    songContainer.appendChild(songInfo);
-                    songContainer.appendChild(audioPlayer);
+                // Crear el contenedor de información de la canción
+                const songInfo = document.createElement('div');
+                songInfo.classList.add('play-song-info');  // Aplicar la clase CSS
+                songInfo.innerHTML = `
+                    <h2>${cancion.titulo}</h2>
+                    <p>de ${cancion.artista}</p>
+                    <p class="mapper">Created by <strong>${cancion.artista}</strong></p>
+                `;
 
-                    // Añadir la nueva canción al listado
-                    songsList.appendChild(songContainer);
+                // Crear la sección de estado (status)
+                const status = document.createElement('div');
+                status.classList.add('status');  // Aplicar la clase CSS
+
+                const statusLabel = document.createElement('span');
+                statusLabel.classList.add('status-label');  // Aplicar la clase CSS
+
+                // Añadir los círculos de dificultad aleatorios
+                const difficulty = document.createElement('div');
+                difficulty.classList.add('difficulty');  // Aplicar la clase CSS
+
+                // Generar círculos aleatorios y agregarlos
+                const circles = getRandomCircles();
+                circles.forEach(circle => {
+                    difficulty.appendChild(circle);
                 });
-            })
-            .catch(error => {
-                console.error('Error al cargar el JSON:', error);
-                document.querySelector('#songsList').innerHTML = '<p>No se pudieron cargar las canciones. Inténtalo más tarde.</p>';
+
+                // Añadir la sección de dificultad y estado al contenedor de la canción
+                status.appendChild(statusLabel);
+                status.appendChild(difficulty);
+                songInfo.appendChild(status);
+
+                // Añadir los elementos al contenedor principal
+                songItem.appendChild(caratula);
+                songItem.appendChild(songInfo);
+
+                // Añadir la nueva canción al listado
+                songList.appendChild(songItem);
             });
-    </script>
+        })
+        .catch(error => console.error('Error al cargar el JSON:', error));
+</script>
+
 
     <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>

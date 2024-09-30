@@ -1,19 +1,5 @@
 [
-    {
-        "title": "Song Title",
-        "artist": "Artist Name",
-        "url_song": "\/src\/PHP\/uploads\/song.mp3",
-        "duration": "3:45",
-        "cover": "\/src\/PHP\/uploads\/cover.jpg"
-    },
-    {
-        "titulo": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "artista": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "descripcion": null,
-        "archivoMusica": "PHP\/uploads\/musica\/wwd.mp3juice.blog - Women -Doja Cat-  Sped Up.mp3",
-        "archivoCaratula": "PHP\/uploads\/caratula\/png-clipart-logo-idea-cute-eagle-leaf-logo-thumbnail.png",
-        "archivoTexto": null
-    },
+   
     {
         "titulo": "Siuu",
         "artista": "el bicho",
