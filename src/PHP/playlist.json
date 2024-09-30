@@ -1,19 +1,58 @@
 [
-   
     {
-        "titulo": "Siuu",
-        "artista": "el bicho",
+        "titulo": "Fall Back",
+        "artista": "Lithe Ft Lil Tjay",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/wwd.mp3juice.blog - Women -Doja Cat-  Sped Up.mp3",
-        "archivoCaratula": "uploads\/caratula\/png-clipart-logo-idea-cute-eagle-leaf-logo-thumbnail.png",
+        "archivoMusica": "uploads\/musica\/Lithe - Fall Back ft. Lil Tjay.mp3",
+        "archivoCaratula": "uploads\/caratula\/fallback.jpg",
         "archivoTexto": null
     },
     {
-        "titulo": "hola",
-        "artista": "siuuuuu",
-        "descripcion": "",
-        "archivoMusica": "uploads\/musica\/wwd.mp3juice.blog - Women -Doja Cat-  Sped Up.mp3",
-        "archivoCaratula": "uploads\/caratula\/png-clipart-logo-idea-cute-eagle-leaf-logo-thumbnail.png",
+        "titulo": "Stay With Me",
+        "artista": "1nonly",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/Stay With Me.mp3",
+        "archivoCaratula": "uploads\/caratula\/staywithme.jpg",
+        "archivoTexto": null
+    },
+    {
+        "titulo": "Meridian",
+        "artista": "Tiakola x Dave",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/Tiakola x Dave - Meridian (Clip officiel).mp3",
+        "archivoCaratula": "uploads\/caratula\/meridian.jpeg",
+        "archivoTexto": null
+    },
+    {
+        "titulo": "Vibez",
+        "artista": "KHEA",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/KHEA, Awesome Pierre - VIBEZ (Visualizer).mp3",
+        "archivoCaratula": "uploads\/caratula\/vibrz.jpeg",
+        "archivoTexto": null
+    },
+    {
+        "titulo": "SHINRA TENSEI",
+        "artista": "SKXRZ",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/SHINRA TENSEI.mp3",
+        "archivoCaratula": "uploads\/caratula\/shinra tensei.jpeg",
+        "archivoTexto": null
+    },
+    {
+        "titulo": "Warch This -  Pluggnb Remix",
+        "artista": "Lil Uzi Vert, speed up nightcore, ARIZONATEARS",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/Lil Uzi Vert - Watch This (ARIZONATEARS Pluggnb Remix) Lyrics.mp3",
+        "archivoCaratula": "uploads\/caratula\/watch this.jpeg",
+        "archivoTexto": null
+    },
+    {
+        "titulo": "aaaa",
+        "artista": "aaaaaaaaaaaa",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/Lil Uzi Vert - Watch This (ARIZONATEARS Pluggnb Remix) Lyrics.mp3",
+        "archivoCaratula": "uploads\/caratula\/shinra tensei.jpeg",
         "archivoTexto": null
     }
 ]

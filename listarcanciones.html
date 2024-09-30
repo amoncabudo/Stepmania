@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="header">
-        <a href="#" class="logo">ᚠ</a>
+        <a href="listarcanciones.html" class="logo">ᚠ</a>
         <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
     </header>
 
@@ -38,63 +38,47 @@
         return circles;
     }
 
-    // Leer el archivo JSON y mostrar las canciones
     fetch('src/PHP/playlist.json')
-        .then(response => response.json())
-        .then(data => {
-            const songList = document.getElementById('play-song-list');
+    .then(response => response.json())
+    .then(data => {
+        const songList = document.getElementById('play-song-list');
 
-            data.forEach(cancion => {
-                // Crear el contenedor principal con la clase adecuada
-                const songItem = document.createElement('div');
-                songItem.classList.add('play-song-item');  // Aplicar la clase CSS
+        data.forEach(cancion => {
+            // Crear el contenedor principal con la clase adecuada
+            const songItem = document.createElement('div');
+            songItem.classList.add('play-song-item');
 
-                // Añadir la imagen de la carátula con la clase adecuada
-                const caratula = document.createElement('img');
-                caratula.src = 'src/PHP/' + cancion.archivoCaratula;  // Ruta a la carátula
-                caratula.alt = `Carátula de ${cancion.titulo}`;
-                caratula.classList.add('song-img');  // Aplicar la clase CSS
+            // Verificar la ruta a la carátula
+            const caratulaPath = 'src/PHP/' + cancion.archivoCaratula;
 
-                // Crear el contenedor de información de la canción
-                const songInfo = document.createElement('div');
-                songInfo.classList.add('play-song-info');  // Aplicar la clase CSS
-                songInfo.innerHTML = `
-                    <h2>${cancion.titulo}</h2>
-                    <p>de ${cancion.artista}</p>
-                    <p class="mapper">Created by <strong>${cancion.artista}</strong></p>
-                `;
+            // Establecer la carátula como fondo del elemento principal
+            songItem.style.backgroundImage = `url('${caratulaPath}')`;
 
-                // Crear la sección de estado (status)
-                const status = document.createElement('div');
-                status.classList.add('status');  // Aplicar la clase CSS
+            // Añadir la imagen de la carátula con la clase adecuada
+            const caratula = document.createElement('img');
+            caratula.src = caratulaPath;
+            caratula.alt = `Carátula de ${cancion.titulo}`;
+            caratula.classList.add('song-img');  // Aplicar la clase CSS
 
-                const statusLabel = document.createElement('span');
-                statusLabel.classList.add('status-label');  // Aplicar la clase CSS
+            // Crear el contenedor de información de la canción
+            const songInfo = document.createElement('div');
+            songInfo.classList.add('play-song-info');
+            songInfo.innerHTML = `
+                <h2>${cancion.titulo}</h2>
+                <p>by ${cancion.artista}</p>
+            `;
 
-                // Añadir los círculos de dificultad aleatorios
-                const difficulty = document.createElement('div');
-                difficulty.classList.add('difficulty');  // Aplicar la clase CSS
+            // Añadir la imagen y el texto al contenedor principal
+            songItem.appendChild(caratula);
+            songItem.appendChild(songInfo);
 
-                // Generar círculos aleatorios y agregarlos
-                const circles = getRandomCircles();
-                circles.forEach(circle => {
-                    difficulty.appendChild(circle);
-                });
+            // Añadir la nueva canción al listado
+            songList.appendChild(songItem);
+        });
+    })
+    .catch(error => console.error('Error al cargar el JSON:', error));
 
-                // Añadir la sección de dificultad y estado al contenedor de la canción
-                status.appendChild(statusLabel);
-                status.appendChild(difficulty);
-                songInfo.appendChild(status);
 
-                // Añadir los elementos al contenedor principal
-                songItem.appendChild(caratula);
-                songItem.appendChild(songInfo);
-
-                // Añadir la nueva canción al listado
-                songList.appendChild(songItem);
-            });
-        })
-        .catch(error => console.error('Error al cargar el JSON:', error));
 </script>
 
 
