@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Canción</title>
+    <link rel="stylesheet" href="src/CSS/style.css">
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const songId = urlParams.get('id');
+
+            if (songId) {
+                // Cargar los datos de la canción
+                fetch('src/PHP/playlist.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const song = data.find(cancion => cancion.id === parseInt(songId));
+                        if (song) {
+                            // Llenar los campos con la información de la canción
+                            document.getElementById('id').value = song.id;
+                            document.getElementById('titulo').value = song.titulo;
+                            document.getElementById('artista').value = song.artista;
+                            document.getElementById('archivoCaratula').value = song.archivoCaratula; // Si tienes un campo para la carátula
+                        } else {
+                            alert("Canción no encontrada");
+                        }
+                    })
+                    .catch(error => console.error('Error al cargar los datos de la canción:', error));
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Editar Canción</h1>
+    <form id="song-form" action="src/PHP/editar_cancion.php" method="POST">
+        <input type="hidden" id="id" name="id">
+
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+
+        <label for="artista">Artista:</label>
+        <input type="text" id="artista" name="artista" required>
+
+        <label for="archivoCaratula">Carátula (ruta):</label>
+        <input type="text" id="archivoCaratula" name="archivoCaratula" required>
+
+        <button type="submit" id="submit-button">Guardar Cambios</button>
+    </form>
+
+    <a href="listarcanciones.html">Volver a la lista de canciones</a>
+</body>
+</html>

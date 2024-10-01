@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: 0;
 }
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 @font-face {
     font-family: 'Optimus Princeps';
@@ -17,6 +18,8 @@ body {
     min-height: 100vh;
     position: relative;
 }
+
+/*Css Portada*/
 
 .main_title {
     position: absolute;
@@ -102,16 +105,18 @@ body {
     text-decoration: none;
     
 }
+/*Css Portada*/
+
+/*Css header htmls*/
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: black;    
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
     height: 80px;
 }
 
@@ -135,7 +140,10 @@ body {
     transform: scale(1.1);
     color: rgba(255, 255, 255, 0.7); 
 }
+/*Css header htmls*/
 
+
+/*Css formulari afegir cançons*/
 .container {
     display: flex; 
     width: 1000px;     
@@ -172,7 +180,7 @@ textarea {
     color: #ffffff;
 }
 
-button {
+.cancion button {
     margin-top: 20px; 
     padding: 10px; 
     background-color: #d7a94b; 
@@ -182,7 +190,7 @@ button {
     cursor: pointer; 
 }
 
-button:hover {
+.cancion button:hover {
     background-color: #f2a814; 
 }
  h5{
@@ -191,7 +199,7 @@ button:hover {
 }
 
 
-input::file-selector-button{
+.cancion input::file-selector-button{
     padding: 10px;
     background-color: #d7a94b;
     color: white;
@@ -199,12 +207,23 @@ input::file-selector-button{
     border-radius: 4px;
     cursor: pointer;
 }
+/*Css formulari afegir cançons*/
+
+/*Css llista de cançons*/
+.playlist-title{
+    color: white;
+    font-size: 40px;
+    margin-bottom: 20px;
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
 #playlist-container {
     margin-top: 100px;
 }
 
 .play-song-item {
-    
     position: relative;
     display: flex;
     align-items: center;
@@ -214,7 +233,7 @@ input::file-selector-button{
     transition: background-color 0.3s ease;
     margin-bottom: 20px;
     height: 60px;
-    width: 480px;
+    width: 500px;
     background-image: inherit; /* Para heredar la imagen de fondo */
     background-position: center;
     background-repeat: no-repeat;
@@ -223,6 +242,7 @@ input::file-selector-button{
 }
 
 /* Pseudo-elemento para el fondo difuminado */
+
 .play-song-item::before {
     content: '';
     position: absolute;
@@ -251,7 +271,7 @@ input::file-selector-button{
     z-index: 2; /* Asegura que el texto esté por encima del fondo difuminado */
     color: white; /* Color del texto */
     font-weight: bold;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: "Bebas Neue", sans-serif;
 }
 
 /* Título de la canción */
@@ -263,5 +283,38 @@ input::file-selector-button{
 /* Título de la canción */
 .play-song-info p {
     margin: 0; /* Sin márgenes */
-    font-size: 16px; /* Tamaño del título */
+    font-size: 10px; /* Tamaño del título */
+}
+
+/*Css llista de cançons*/
+
+
+/*Css botones editar cancion y eliminar*/
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-left: auto; /* Para que los botones se alineen a la derecha */
+}
+
+/* Estilos para los botones */
+.edit-button, .delete-button {
+    padding: 8px 12px;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+}
+
+.edit-button:hover {
+    background-color: #0dff00; /* Color para hover en el botón de editar */
+}
+
+.delete-button:hover {
+    background-color: red; /* Color para hover en el botón de eliminar */
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Canciones</title>
     <link rel="stylesheet" href="src/CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Cargar FontAwesome -->
 </head>
 <body>
     <header class="header">
@@ -14,18 +15,21 @@
 
    <!-- Contenedor exclusivo para la playlist -->
    <div id="playlist-container">
+    <h1 class="playlist-title">PLAYLIST</h1>
+
     <section id="play-song-list">
-     
-<div id="songList"></div>
+        <div id="songList"></div>
+    </section>
+   </div>
 
 <script>
-    // Función para generar colores aleatorios
+    // Función para generar colores aleatorios (si es que aún la necesitas)
     function getRandomColor() {
         const colors = ['green', 'yellow', 'red', 'blue', 'purple', 'orange', 'pink'];
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
-    // Función para generar un número aleatorio de círculos
+    // Función para generar un número aleatorio de círculos (si es que aún la necesitas)
     function getRandomCircles() {
         const circles = [];
         const numCircles = Math.floor(Math.random() * 4) + 1;  // Genera entre 1 y 4 círculos
@@ -38,6 +42,7 @@
         return circles;
     }
 
+    // Función para cargar las canciones desde el JSON
     fetch('src/PHP/playlist.json')
     .then(response => response.json())
     .then(data => {
@@ -72,17 +77,62 @@
             songItem.appendChild(caratula);
             songItem.appendChild(songInfo);
 
+            // Crear los botones de editar y eliminar
+            const editButton = document.createElement('button');
+            editButton.innerHTML = '<i class="fa-solid fa-pen"></i>';  // Ícono de editar
+            editButton.classList.add('edit-button');
+            editButton.onclick = function() {
+                window.location.href = `editarcanciones.html?id=${cancion.id}`;
+            };
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';  // Ícono de eliminar
+            deleteButton.classList.add('delete-button');
+            deleteButton.onclick = function() {
+                eliminarCancion(cancion.id);
+
+               // Añadir el evento de clic para la acción de editar
+               editButton.addEventListener('click', function() {
+                    window.location.href = `editar.html?id=${cancion.id}`; // Redirigir a la página de edición con el ID de la canción
+                });
+                
+            };
+
+            // Añadir los botones al contenedor de la canción
+            const buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+            buttonContainer.appendChild(editButton);
+            buttonContainer.appendChild(deleteButton);
+
+            songItem.appendChild(buttonContainer);
+
             // Añadir la nueva canción al listado
             songList.appendChild(songItem);
         });
     })
     .catch(error => console.error('Error al cargar el JSON:', error));
 
-
+    // Función para eliminar una canción
+    function eliminarCancion(id) {
+        if (confirm('¿Estás seguro de que deseas eliminar esta canción?')) {
+            fetch(`src/PHP/eliminar_cancion.php?id=${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Canción eliminada exitosamente.');
+                    location.reload(); // Recargar la página para mostrar los cambios
+                } else {
+                    alert('Error al eliminar la canción.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
 </script>
 
-
-    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

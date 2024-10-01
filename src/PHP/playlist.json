@@ -1,5 +1,6 @@
 [
     {
+        "id": "cancion_66fc066bb7e996.76717014",
         "titulo": "Fall Back",
         "artista": "Lithe Ft Lil Tjay",
         "descripcion": null,
@@ -8,6 +9,7 @@
         "archivoTexto": null
     },
     {
+        "id": "cancion_66fc068a861cf7.58622204",
         "titulo": "Stay With Me",
         "artista": "1nonly",
         "descripcion": null,
@@ -16,6 +18,7 @@
         "archivoTexto": null
     },
     {
+        "id": "cancion_66fc06b0443b15.91545932",
         "titulo": "Meridian",
         "artista": "Tiakola x Dave",
         "descripcion": null,
@@ -24,7 +27,8 @@
         "archivoTexto": null
     },
     {
-        "titulo": "Vibez",
+        "id": "cancion_66fc06ca95cb03.23310741",
+        "titulo": "VIBEZ",
         "artista": "KHEA",
         "descripcion": null,
         "archivoMusica": "uploads\/musica\/KHEA, Awesome Pierre - VIBEZ (Visualizer).mp3",
@@ -32,6 +36,7 @@
         "archivoTexto": null
     },
     {
+        "id": "cancion_66fc06e1466551.59516356",
         "titulo": "SHINRA TENSEI",
         "artista": "SKXRZ",
         "descripcion": null,
@@ -40,19 +45,21 @@
         "archivoTexto": null
     },
     {
-        "titulo": "Warch This -  Pluggnb Remix",
+        "id": "cancion_66fc0701bd55d0.84439929",
+        "titulo": "Q U E V A S A H A C E R H O Y ?",
+        "artista": "Omar Courtz x De La Rose",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/download.mp3",
+        "archivoCaratula": "uploads\/caratula\/qevasahacerhoy.jpeg",
+        "archivoTexto": null
+    },
+    {
+        "id": "cancion_66fc0cfbab63d1.99923420",
+        "titulo": "Watch This - ARIZONATEARS Pluggnb Remix",
         "artista": "Lil Uzi Vert, speed up nightcore, ARIZONATEARS",
         "descripcion": null,
         "archivoMusica": "uploads\/musica\/Lil Uzi Vert - Watch This (ARIZONATEARS Pluggnb Remix) Lyrics.mp3",
         "archivoCaratula": "uploads\/caratula\/watch this.jpeg",
-        "archivoTexto": null
-    },
-    {
-        "titulo": "aaaa",
-        "artista": "aaaaaaaaaaaa",
-        "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Lil Uzi Vert - Watch This (ARIZONATEARS Pluggnb Remix) Lyrics.mp3",
-        "archivoCaratula": "uploads\/caratula\/shinra tensei.jpeg",
         "archivoTexto": null
     }
 ]

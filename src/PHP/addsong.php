@@ -66,8 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $json_file = 'playlist.json';
         $canciones = file_exists($json_file) ? json_decode(file_get_contents($json_file), true) : array();
 
-        // Crear la nueva entrada de canción
+        // Generar un ID único para la canción
+        $id = uniqid('cancion_', true);
+
+        // Crear la nueva entrada de canción con ID único
         $nueva_cancion = array(
+            'id' => $id,  // Añadir el ID único
             'titulo' => $titulo,
             'artista' => $artista,
             'descripcion' => $descripcion, // Esto también se guarda en el JSON por si acaso
