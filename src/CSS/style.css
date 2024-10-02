@@ -138,7 +138,7 @@ body {
 
 .home-button:hover {
     transform: scale(1.1);
-    color: rgba(255, 255, 255, 0.7); 
+    color: rgba(255, 255, 255, 0.7);
 }
 /*Css header htmls*/
 
@@ -158,6 +158,8 @@ body {
     border-radius: 8px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
     margin-right: 20px; 
+    font-family: "Bebas Neue", sans-serif;
+
 }
 
 
@@ -298,7 +300,7 @@ textarea {
 }
 
 /* Estilos para los botones */
-.edit-button, .delete-button {
+.edit-button, .delete-button, .play-button {
     padding: 8px 12px;
     background-color: transparent;
     border: none;
@@ -306,15 +308,24 @@ textarea {
     cursor: pointer;
     color: white;
     font-family: "Bebas Neue", sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     transition: background-color 0.3s ease;
     z-index: 2;
 }
 
 .edit-button:hover {
-    background-color: #0dff00; /* Color para hover en el botón de editar */
+    background-color: #1900ff; /* Color para hover en el botón de editar */
+    transform: scale(1.2); /* Aumenta el tamaño de la imagen al pasar el cursor */
+
 }
 
 .delete-button:hover {
     background-color: red; /* Color para hover en el botón de eliminar */
+    transform: scale(1.2); /* Aumenta el tamaño de la imagen al pasar el cursor */
+
+}
+.play-button:hover {
+    transform: scale(1.2); /* Aumenta el tamaño de la imagen al pasar el cursor */
+    background-color: #0dff00; /* Color para hover en el botón de editar */
+
 }
