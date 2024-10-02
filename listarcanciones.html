@@ -23,27 +23,8 @@
    </div>
 
 <script>
-    // Función para generar colores aleatorios (si es que aún la necesitas)
-    function getRandomColor() {
-        const colors = ['green', 'yellow', 'red', 'blue', 'purple', 'orange', 'pink'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
-
-    // Función para generar un número aleatorio de círculos (si es que aún la necesitas)
-    function getRandomCircles() {
-        const circles = [];
-        const numCircles = Math.floor(Math.random() * 4) + 1;  // Genera entre 1 y 4 círculos
-        for (let i = 0; i < numCircles; i++) {
-            const circle = document.createElement('span');
-            circle.classList.add('circle');
-            circle.style.backgroundColor = getRandomColor();  // Asigna un color aleatorio
-            circles.push(circle);
-        }
-        return circles;
-    }
-
-    // Función para cargar las canciones desde el JSON
-    fetch('src/PHP/playlist.json')
+ // Función para cargar las canciones desde el JSON
+fetch('src/PHP/playlist.json')
     .then(response => response.json())
     .then(data => {
         const songList = document.getElementById('play-song-list');
@@ -73,11 +54,7 @@
                 <p>by ${cancion.artista}</p>
             `;
 
-            // Añadir la imagen y el texto al contenedor principal
-            songItem.appendChild(caratula);
-            songItem.appendChild(songInfo);
-
-            // Crear los botones de editar y eliminar
+            // Crear los botones de editar, eliminar y previsualizar
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fa-solid fa-pen"></i>';  // Ícono de editar
             editButton.classList.add('edit-button');
@@ -90,21 +67,32 @@
             deleteButton.classList.add('delete-button');
             deleteButton.onclick = function() {
                 eliminarCancion(cancion.id);
-
-               // Añadir el evento de clic para la acción de editar
-               editButton.addEventListener('click', function() {
-                    window.location.href = `editar.html?id=${cancion.id}`; // Redirigir a la página de edición con el ID de la canción
-                });
-                
             };
+
+            // Crear el botón de reproducción
+            const playButton = document.createElement('button');
+            playButton.innerHTML = '<i class="fa-solid fa-play"></i>';  // Ícono de reproducir
+            playButton.classList.add('play-button');
+            playButton.onclick = function() {
+                playcancion(cancion.audio, playButton); // Asegúrate de que 'cancion.audio' tenga la ruta correcta
+            };
+
+            // Crear el reproductor de audio (oculto)
+            const audioPlayer = document.createElement('audio');
+            audioPlayer.src = `src/PHP/${cancion.audio}`; // Asume que el objeto cancion tiene un campo audio con la ruta
 
             // Añadir los botones al contenedor de la canción
             const buttonContainer = document.createElement('div');
             buttonContainer.classList.add('button-container');
+            buttonContainer.appendChild(playButton);  // Añadir el botón de reproducir
             buttonContainer.appendChild(editButton);
             buttonContainer.appendChild(deleteButton);
 
+            // Añadir elementos al contenedor de la canción
+            songItem.appendChild(caratula);
+            songItem.appendChild(songInfo);
             songItem.appendChild(buttonContainer);
+            songItem.appendChild(audioPlayer); // Añadir el reproductor de audio (oculto)
 
             // Añadir la nueva canción al listado
             songList.appendChild(songItem);
@@ -112,24 +100,39 @@
     })
     .catch(error => console.error('Error al cargar el JSON:', error));
 
-    // Función para eliminar una canción
-    function eliminarCancion(id) {
-        if (confirm('¿Estás seguro de que deseas eliminar esta canción?')) {
-            fetch(`src/PHP/eliminar_cancion.php?id=${id}`, {
-                method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Canción eliminada exitosamente.');
-                    location.reload(); // Recargar la página para mostrar los cambios
-                } else {
-                    alert('Error al eliminar la canción.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
+// Función para reproducir la canción
+function playcancion(audio, playButton) {
+    const icon = playButton.querySelector('i'); // Selecciona el icono dentro del botón
+    if (audio.paused) {
+        audio.play();
+        icon.classList.remove('fa-play');  // Cambiar de "play" a "pause"
+        icon.classList.add('fa-pause');
+    } else {
+        audio.pause();
+        icon.classList.remove('fa-pause');  // Cambiar de "pause" a "play"
+        icon.classList.add('fa-play');
     }
+}
+
+// Función para eliminar una canción
+function eliminarCancion(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar esta canción?')) {
+        fetch(`src/PHP/eliminar_cancion.php?id=${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Canción eliminada exitosamente.');
+                location.reload(); // Recargar la página para mostrar los cambios
+            } else {
+                alert('Error al eliminar la canción.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+1
 </script>
 
 <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
