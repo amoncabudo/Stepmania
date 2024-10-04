@@ -3,51 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Canción</title>
+    <title>Editar Canción - Quien es Dei V</title>
     <link rel="stylesheet" href="src/CSS/style.css">
-    <script>
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const songId = urlParams.get('id');
-
-            if (songId) {
-                // Cargar los datos de la canción
-                fetch('src/PHP/playlist.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        const song = data.find(cancion => cancion.id === parseInt(songId));
-                        if (song) {
-                            // Llenar los campos con la información de la canción
-                            document.getElementById('id').value = song.id;
-                            document.getElementById('titulo').value = song.titulo;
-                            document.getElementById('artista').value = song.artista;
-                            document.getElementById('archivoCaratula').value = song.archivoCaratula; // Si tienes un campo para la carátula
-                        } else {
-                            alert("Canción no encontrada");
-                        }
-                    })
-                    .catch(error => console.error('Error al cargar los datos de la canción:', error));
-            }
-        }
-    </script>
 </head>
 <body>
-    <h1>Editar Canción</h1>
-    <form id="song-form" action="src/PHP/editar_cancion.php" method="POST">
-        <input type="hidden" id="id" name="id">
+    <header class="header">
+        <a href="listarcanciones.html" class="logo">ᚠ</a>
+        <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
+    </header>
+<div class="container">
+    <div class="edit-form">
+        <h5>Editar Canción</h5>
+        <form id="editSongForm">
+            <input type="hidden" id="songId" name="id" value="1">
+            
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" required>
 
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo" required>
+            <label for="artista">Artista:</label>
+            <input type="text" id="artista" name="artista" required>
 
-        <label for="artista">Artista:</label>
-        <input type="text" id="artista" name="artista" required>
+            <label for="musica">Archivo MP3:</label>
+            <input type="file" id="musica-btn" name="musica" accept="audio/*" required>
 
-        <label for="archivoCaratula">Carátula (ruta):</label>
-        <input type="text" id="archivoCaratula" name="archivoCaratula" required>
+            <label for="caratula">Portada:</label>
+            <input type="file" id="caratula" name="caratula" accept="image/*" required>
 
-        <button type="submit" id="submit-button">Guardar Cambios</button>
-    </form>
+            <button type="submit">Guardar Cambios</button>
+            <div id="message"></div> <!-- Para mostrar mensajes de error o éxito -->
+            </div>
 
-    <a href="listarcanciones.html">Volver a la lista de canciones</a>
+        </form>
+    </div>
+
+    <script>
+       // Actualizar el script existente con este código
+document.addEventListener('DOMContentLoaded', function() {
+    // Cargar los datos iniciales de la canción
+    const urlParams = new URLSearchParams(window.location.search);
+    const songId = urlParams.get('id');
+
+    if (songId) {
+        fetch('src/PHP/playlist.json')
+            .then(response => response.json())
+            .then(data => {
+                const cancion = data.find(song => song.id === songId);
+                if (cancion) {
+                    // Rellenar el formulario con los datos existentes
+                    document.getElementById('songId').value = cancion.id;
+                    document.getElementById('titulo').value = cancion.titulo;
+                    document.getElementById('artista').value = cancion.artista;
+                    
+                    // Mostrar la carátula actual
+                    if (cancion.archivoCaratula) {
+                        document.getElementById('caratulaPreview').src = cancion.archivoCaratula;
+                    }
+                    
+                    // Configurar el audio actual
+                    if (cancion.audio) {
+                        document.getElementById('audioPreview').src = cancion.audio;
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Manejar la previsualización de la carátula
+    document.getElementById('caratula').addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('caratulaPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // Manejar el envío del formulario
+    document.getElementById('editSongForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('src/PHP/editarcanciones.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Canción actualizada exitosamente');
+                window.location.href = 'listarcanciones.html';
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al actualizar la canción');
+        });
+    });
+});
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>
