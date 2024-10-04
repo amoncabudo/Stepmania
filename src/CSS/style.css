@@ -322,10 +322,15 @@ textarea {
 }
 
 /*Css formulari afegir cançons*/
+.container-edit{
+    display: flex;
+    align-items: end;
+}
 .edit-form { 
     width: 400px;     
     justify-content: flex-start; 
-    margin-top: 80px; 
+    margin-top: 10px; 
+    font-family: "Bebas Neue", sans-serif;
 }
 
 label {
@@ -347,7 +352,7 @@ textarea {
 }
 
 .edit-form button {
-    margin-top: 20px; 
+    margin-top: 10px; 
     padding: 10px; 
     background-color: #d7a94b; 
     color: white; 
@@ -368,4 +373,20 @@ textarea {
     border-radius: 4px;
     cursor: pointer;
 }
+.vovler-btn {
+    display: flex;
+    position: absolute;
+    margin-right: 20px;
+    left: 945px;
+    font-size: 40px;
+    color: #b18f61; 
+    transition: transform 0.3s, color 0.3s; 
+}
+
+.vovler-btn:hover {
+    color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.1);
+}
+
+
 /*Css formulari afegir cançons*/
