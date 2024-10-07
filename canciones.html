@@ -14,13 +14,11 @@
         <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
         </div>
     </header>
-
-    <!-- Contenedor principal -->
     <div class="container">
         <!-- Formulario para agregar nuevas canciones -->
         <div class="form-container">
             <h5>Agregar Nueva Canción</h5>
-            <form action="http://localhost:8080/src/PHP/addsong.php" method="POST" enctype="multipart/form-data" class="cancion">
+            <form id="song-form" action="http://localhost:8080/src/PHP/addsong.php" method="POST" enctype="multipart/form-data" class="cancion">
                 <label for="titulo">Título:</label>
                 <input type="text" id="titulo" name="titulo" required>
 
@@ -33,49 +31,83 @@
                 <label for="caratula">Portada:</label>
                 <input type="file" id="caratula" name="caratula" accept="image/*" required>
 
+                <!-- Opción de subir archivo TXT -->
+                <label for="fitxer-txt">Subir archivo TXT:</label>
+                <input type="file" id="fitxer-txt" name="fitxer-txt" accept=".txt">
+
+                <!-- Opción de ingresar datos directamente -->
+                <label for="textarea">O introduzca datos directamente:</label>
+                <textarea id="textarea" name="textarea" rows="4" cols="50"></textarea>
+
                 <button type="submit">Agregar Canción</button>
                 <div id="message"></div> <!-- Para mostrar mensajes de error o éxito -->
             </form>
         </div>
+    </div>
 
     <script>
-        // Cargar las canciones desde el archivo JSON y mostrar en la lista
-        fetch('src/PHP/playlist.json')
-            .then(response => response.json())
-            .then(data => {
-                const songsList = document.getElementById('songs');
-                songsList.innerHTML = '';
+        document.getElementById('song-form').addEventListener('submit', function(event) {
+            const fileInput = document.getElementById('fitxer-txt');
+            const textareaInput = document.getElementById('textarea');
+            const messageDiv = document.getElementById('message');
 
-                data.forEach(song => {
-                    const li = document.createElement('li');
-                    li.classList.add('song-item');
+            let fileUploaded = fileInput.files.length > 0;
+            let textareaFilled = textareaInput.value.trim() !== '';
 
-                    li.innerHTML = `
-                        <img class="cover" src="${song.archivoCaratula}" alt="Carátula de ${song.titulo}">
-                        <div class="song-details">
-                            <strong>${song.titulo}</strong><br>
-                            <em>${song.artista}</em>
-                        </div>
-                        <div class="song-actions">
-                            <audio controls>
-                                <source src="${song.archivoMusica}" type="audio/mpeg">
-                                Tu navegador no soporta el elemento de audio.
-                            </audio>
-                            <button onclick="deleteSong('${song.titulo}')">Eliminar</button>
-                        </div>
-                    `;
+            // Validar que no se use el archivo y el textarea al mismo tiempo
+            if (fileUploaded && textareaFilled) {
+                event.preventDefault(); // Cancela el envío del formulario
+                messageDiv.textContent = "Error: No puede subir un archivo TXT y rellenar el textarea al mismo tiempo.";
+                messageDiv.style.color = 'red';
+                return;
+            }
 
-                    songsList.appendChild(li);
-                });
-            })
-            .catch(error => {
-                console.error('Error al cargar las canciones:', error);
-            });
+            // Validación del archivo TXT
+            if (fileUploaded) {
+                const file = fileInput.files[0];
+                if (!file.name.endsWith('.txt')) {
+                    event.preventDefault(); // Cancela el envío del formulario
+                    messageDiv.textContent = "Error: Solo se permiten archivos TXT.";
+                    messageDiv.style.color = 'red';
+                    return;
+                }
 
-        // Función para eliminar canción (en desarrollo)
-        function deleteSong(titulo) {
-            alert('Eliminar la canción: ' + titulo);
-            // Aquí puedes agregar la lógica para eliminar la canción del JSON y la interfaz
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    if (!validarDatos(content)) {
+                        event.preventDefault();
+                        messageDiv.textContent = "Error: El archivo TXT contiene datos inválidos.";
+                        messageDiv.style.color = 'red';
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            // Validación del textarea
+            if (textareaFilled) {
+                if (!validarDatos(textareaInput.value)) {
+                    event.preventDefault(); // Cancela el envío del formulario
+                    messageDiv.textContent = "Error: Los datos introducidos en el textarea son inválidos.";
+                    messageDiv.style.color = 'red';
+                    return;
+                }
+            }
+        });
+
+        // Función para validar el contenido del TXT o del textarea
+        function validarDatos(content) {
+            const lines = content.trim().split('\n');
+
+            for (let line of lines) {
+                const [instantInicial, instantFinal] = line.split(',').map(Number);
+
+                // Verificar que los instantes sean números válidos y que el instante inicial sea menor que el instante final
+                if (isNaN(instantInicial) || isNaN(instantFinal) || instantInicial < 0 || instantFinal < 0 || instantInicial >= instantFinal) {
+                    return false; // Datos inválidos
+                }
+            }
+            return true; // Todos los datos son válidos
         }
     </script>
        

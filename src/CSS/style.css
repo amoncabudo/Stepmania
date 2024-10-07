@@ -19,6 +19,17 @@ body {
     position: relative;
 }
 
+/* Scrollbar */
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61);
+  border-radius: 100px;
+}
+
 /*Css Portada*/
 
 .main_title {
@@ -143,20 +154,23 @@ body {
 /*Css header htmls*/
 
 /*Css formulari afegir cançons*/
-.form-group {
-    flex: 1; 
-    padding: 25px;
-    background-color: #1a1a1a; 
+.form-container {
+    position: fixed; /* Cambiar a fixed */
+    top: 40px; /* Espaciado desde la parte superior (ajusta según sea necesario) */
+    left: 50%;
+    transform: translateX(-50%); /* Centrar horizontalmente */
+    padding: 20px;
+    background-color: rgba(26, 26, 26, 0.9); /* Color de fondo semitransparente */
     border-radius: 8px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
     margin-right: 20px; 
     font-family: "Bebas Neue", sans-serif;
-
+    z-index: 10; /* Asegúrate de que el formulario esté por encima de otros elementos */
 }
 
 label {
     display: block; 
-    margin-top: 10px; 
+    margin-top: 0px; 
     color: #ffffff; 
 }
 
@@ -190,7 +204,6 @@ textarea {
     font-size: 30PX ;
 }
 
-
 .cancion input::file-selector-button{
     padding: 10px;
     background-color: #d7a94b;
@@ -213,7 +226,7 @@ textarea {
 }
 
 #playlist-container {
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .play-song-item {
@@ -233,8 +246,6 @@ textarea {
     background-size: cover;
     overflow: hidden; /* Evitar que el contenido se salga del contenedor */
 }
-
-/* Pseudo-elemento para el fondo difuminado */
 
 .play-song-item::before {
     content: '';
@@ -387,6 +398,4 @@ textarea {
     color: rgba(255, 255, 255, 0.7);
     transform: scale(1.1);
 }
-
-
 /*Css formulari afegir cançons*/

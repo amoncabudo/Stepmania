@@ -1,29 +1,11 @@
 [
     {
-        "id": "cancion_66fc066bb7e996.76717014",
-        "titulo": "Fall Back",
-        "artista": "Lithe Ft Lil Tjay",
-        "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Lithe - Fall Back ft. Lil Tjay.mp3",
-        "archivoCaratula": "uploads\/caratula\/fallback.jpg",
-        "archivoTexto": null
-    },
-    {
-        "id": "cancion_66fc068a861cf7.58622204",
+        "id": "cancion_66fc06b0443b15.91545932",
         "titulo": "Stay With Me",
         "artista": "1nonly",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Stay With Me.mp3",
-        "archivoCaratula": "uploads\/caratula\/staywithme.jpg",
-        "archivoTexto": null
-    },
-    {
-        "id": "cancion_66fc06b0443b15.91545932",
-        "titulo": "Meridian",
-        "artista": "Tiakola x Dave",
-        "descripcion": null,
         "archivoMusica": "uploads\/musica\/Tiakola x Dave - Meridian (Clip officiel).mp3",
-        "archivoCaratula": "uploads\/caratula\/meridian.jpeg",
+        "archivoCaratula": "uploads\/caratulas\/670026fc27dc5.jpg",
         "archivoTexto": null
     },
     {
@@ -60,6 +42,15 @@
         "descripcion": null,
         "archivoMusica": "uploads\/musica\/Lil Uzi Vert - Watch This (ARIZONATEARS Pluggnb Remix) Lyrics.mp3",
         "archivoCaratula": "uploads\/caratula\/watch this.jpeg",
+        "archivoTexto": null
+    },
+    {
+        "id": "cancion_66fff237739a99.65288280",
+        "titulo": "Fall Back",
+        "artista": "Lithe Ft Lil Tjay",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/Lithe - Fall Back ft. Lil Tjay.mp3",
+        "archivoCaratula": "uploads\/caratula\/fallback.jpg",
         "archivoTexto": null
     }
 ]
