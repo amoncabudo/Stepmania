@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Canciones</title>
     <link rel="stylesheet" href="src/CSS/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Cargar FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header class="header">
@@ -13,129 +13,155 @@
         <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
     </header>
 
-   <!-- Contenedor exclusivo para la playlist -->
-   <div id="playlist-container">
-    <h1 class="playlist-title">PLAYLIST</h1>
+    <div id="playlist-container">
+        <h1 class="playlist-title">PLAYLIST</h1>
+        <section id="play-song-list">
+            <div id="songList"></div>
+        </section>
+    </div>
 
-    <section id="play-song-list">
-        <div id="songList"></div>
-    </section>
-   </div>
+    <script>
+        // Función para cargar las canciones desde el JSON
+        fetch('src/PHP/playlist.json')
+            .then(response => response.json())
+            .then(data => {
+                const songList = document.getElementById('play-song-list');
 
-<script>
- // Función para cargar las canciones desde el JSON
-fetch('src/PHP/playlist.json')
-    .then(response => response.json())
-    .then(data => {
-        const songList = document.getElementById('play-song-list');
+                data.forEach((cancion) => {
+                    // Verificar que la propiedad 'archivoMusica' esté definida
+                    if (!cancion.archivoMusica) {
+                        console.error(`No se ha definido archivoMusica para la canción: ${cancion.titulo}`);
+                        alert(`No se ha definido archivoMusica para la canción: ${cancion.titulo}`);
+                        return; // Salir de esta iteración si no hay archivo de música
+                    }
 
-        data.forEach(cancion => {
-            // Crear el contenedor principal con la clase adecuada
-            const songItem = document.createElement('div');
-            songItem.classList.add('play-song-item');
+                    // Crear el contenedor principal con la clase adecuada
+                    const songItem = document.createElement('div');
+                    songItem.classList.add('play-song-item');
 
-            // Verificar la ruta a la carátula
-            const caratulaPath = 'src/PHP/' + cancion.archivoCaratula;
+                    // Verificar la ruta a la carátula
+                    const caratulaPath = 'src/PHP/' + cancion.archivoCaratula;
 
-            // Establecer la carátula como fondo del elemento principal
-            songItem.style.backgroundImage = `url('${caratulaPath}')`;
+                    // Establecer la carátula como fondo del elemento principal
+                    songItem.style.backgroundImage = `url('${caratulaPath}')`;
 
-            // Añadir la imagen de la carátula con la clase adecuada
-            const caratula = document.createElement('img');
-            caratula.src = caratulaPath;
-            caratula.alt = `Carátula de ${cancion.titulo}`;
-            caratula.classList.add('song-img');  // Aplicar la clase CSS
+                    // Añadir la imagen de la carátula con la clase adecuada
+                    const caratula = document.createElement('img');
+                    caratula.src = caratulaPath;
+                    caratula.alt = `Carátula de ${cancion.titulo}`;
+                    caratula.classList.add('song-img');
 
-            // Crear el contenedor de información de la canción
-            const songInfo = document.createElement('div');
-            songInfo.classList.add('play-song-info');
-            songInfo.innerHTML = `
-                <h2>${cancion.titulo}</h2>
-                <p>by ${cancion.artista}</p>
-            `;
+                    // Crear el contenedor de información de la canción
+                    const songInfo = document.createElement('div');
+                    songInfo.classList.add('play-song-info');
+                    songInfo.innerHTML = `
+                        <h2>${cancion.titulo}</h2>
+                        <p>by ${cancion.artista}</p>
+                    `;
 
-            // Crear los botones de editar, eliminar y previsualizar
-            const editButton = document.createElement('button');
-            editButton.innerHTML = '<i class="fa-solid fa-pen"></i>';  // Ícono de editar
-            editButton.classList.add('edit-button');
-            editButton.onclick = function() {
-                window.location.href = `editarcanciones.html?id=${cancion.id}`;
-            };
+                    // Crear los botones de editar, eliminar y previsualizar
+                    const editButton = document.createElement('button');
+                    editButton.innerHTML = '<i class="fa-solid fa-pen"></i>';  // Ícono de editar
+                    editButton.classList.add('edit-button');
+                    editButton.onclick = function() {
+                        window.location.href = `editarcanciones.html?id=${cancion.id}`;
+                    };
 
-            const deleteButton = document.createElement('button');
-            deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';  // Ícono de eliminar
-            deleteButton.classList.add('delete-button');
-            deleteButton.onclick = function() {
-                eliminarCancion(cancion.id);
-            };
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';  // Ícono de eliminar
+                    deleteButton.classList.add('delete-button');
+                    deleteButton.onclick = function() {
+                        eliminarCancion(cancion.id);
+                    };
 
-            // Crear el botón de reproducción
-            const playButton = document.createElement('button');
-            playButton.innerHTML = '<i class="fa-solid fa-play"></i>';  // Ícono de reproducir
-            playButton.classList.add('play-button');
-            playButton.onclick = function() {
-                playcancion(cancion.audio, playButton); // Asegúrate de que 'cancion.audio' tenga la ruta correcta
-            };
+                    // Crear el botón de reproducción
+                    const playButton = document.createElement('button');
+                    playButton.innerHTML = '<i class="fa-solid fa-play"></i>';  // Ícono de reproducir
+                    playButton.classList.add('play-button');
 
-            // Crear el reproductor de audio (oculto)
-            const audioPlayer = document.createElement('audio');
-            audioPlayer.src = `src/PHP/${cancion.audio}`; // Asume que el objeto cancion tiene un campo audio con la ruta
+                    // Crear el reproductor de audio (oculto)
+                    const audioPlayer = document.createElement('audio');
+                    audioPlayer.src = `src/PHP/${cancion.archivoMusica}`; // Usar la ruta completa para el archivo de música
+                    audioPlayer.classList.add('song-audio'); // Aplicar clase CSS si es necesario
+                    audioPlayer.preload = 'metadata'; // Precargar metadatos
 
-            // Añadir los botones al contenedor de la canción
-            const buttonContainer = document.createElement('div');
-            buttonContainer.classList.add('button-container');
-            buttonContainer.appendChild(playButton);  // Añadir el botón de reproducir
-            buttonContainer.appendChild(editButton);
-            buttonContainer.appendChild(deleteButton);
+                    // Manejo de errores del audio
+                    audioPlayer.onerror = function() {
+                        console.error(`Error al cargar el archivo de audio: ${audioPlayer.src}`);
+                        alert(`Error al cargar el audio: ${cancion.titulo}`);
+                    };
 
-            // Añadir elementos al contenedor de la canción
-            songItem.appendChild(caratula);
-            songItem.appendChild(songInfo);
-            songItem.appendChild(buttonContainer);
-            songItem.appendChild(audioPlayer); // Añadir el reproductor de audio (oculto)
+                    // Funcionalidad para reproducir/pausar la canción
+                    playButton.addEventListener('click', (event) => {
+                        event.stopPropagation();  // Evita que el clic en el botón se propague
+                        togglePlay(audioPlayer, playButton);
+                    });
 
-            // Añadir la nueva canción al listado
-            songList.appendChild(songItem);
-        });
-    })
-    .catch(error => console.error('Error al cargar el JSON:', error));
+                    // Añadir los botones al contenedor de la canción
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.classList.add('button-container');
+                    buttonContainer.appendChild(playButton);  // Añadir el botón de reproducir
+                    buttonContainer.appendChild(editButton);
+                    buttonContainer.appendChild(deleteButton);
 
-// Función para reproducir la canción
-function playcancion(audio, playButton) {
-    const icon = playButton.querySelector('i'); // Selecciona el icono dentro del botón
-    if (audio.paused) {
-        audio.play();
-        icon.classList.remove('fa-play');  // Cambiar de "play" a "pause"
-        icon.classList.add('fa-pause');
-    } else {
-        audio.pause();
-        icon.classList.remove('fa-pause');  // Cambiar de "pause" a "play"
-        icon.classList.add('fa-play');
-    }
-}
+                    // Añadir elementos al contenedor de la canción
+                    songItem.appendChild(caratula);
+                    songItem.appendChild(songInfo);
+                    songItem.appendChild(buttonContainer);
+                    songItem.appendChild(audioPlayer);  // Añadir el reproductor de audio (oculto)
 
-// Función para eliminar una canción
-function eliminarCancion(id) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta canción?')) {
-        fetch(`src/PHP/eliminar_cancion.php?id=${id}`, {
-            method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Canción eliminada exitosamente.');
-                location.reload(); // Recargar la página para mostrar los cambios
+                    // Añadir la nueva canción al listado
+                    songList.appendChild(songItem);
+                });
+            })
+            .catch(error => console.error('Error al cargar el JSON:', error));
+
+        // Función para reproducir o pausar la canción
+        function togglePlay(audio, playButton) {
+            const icon = playButton.querySelector('i'); // Selecciona el icono dentro del botón
+            if (audio.paused) {
+                // Pausar cualquier otra canción que esté sonando
+                document.querySelectorAll('audio').forEach(el => el.pause());
+                document.querySelectorAll('.play-button i').forEach(icon => {
+                    icon.classList.remove('fa-pause');
+                    icon.classList.add('fa-play');
+                });
+
+                // Reproducir la canción seleccionada
+                audio.play().catch(err => {
+                    console.error('Error al intentar reproducir la canción:', err);
+                    alert(`No se pudo reproducir "${audio.src}". Verifica la ruta del archivo.`);
+                });
+                icon.classList.remove('fa-play');
+                icon.classList.add('fa-pause');
             } else {
-                alert('Error al eliminar la canción.');
+                audio.pause();
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-play');
             }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-}
-1
-</script>
+        }
 
-<script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
+        // Función para eliminar una canción
+        function eliminarCancion(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta canción?')) {
+                fetch(`src/PHP/eliminar_cancion.php?id=${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Canción eliminada exitosamente.');
+                        location.reload(); // Recargar la página para mostrar los cambios
+                    } else {
+                        alert('Error al eliminar la canción.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>
