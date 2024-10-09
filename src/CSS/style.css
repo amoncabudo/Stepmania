@@ -36,7 +36,7 @@ background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61); /*Añadimos u
     position: absolute; /*Aplicamos posicion absoluta */
     left: 50%; /*Posiciona el elemento de modo que el borde izquierdo quede en el 50% del ancho del contenedor*/
     top: 30%; /*Posiciona el borde superior del elemento a un 30% desde la parte superior del contenedor*/
-    transform: translateX(-50%); /*Hacemos que el poscionamiento de la derecha, utilicé el 50%, por lo tanto, el elemento queda centrado*/
+    transform: translateX(-50%); /*Hacemos que el poscionamiento de la derecha, utilice el 50%, por lo tanto, el elemento queda centrado*/
     text-align: center; /*Alineamos el texto para que sea centrado*/
     z-index: 2; /*Definimos que el titulo, esta sobrepuesto de otros elementos*/
 }
@@ -101,18 +101,18 @@ background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61); /*Añadimos u
     position: absolute;
     left: 50%;
     top: 40%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%); /*Centramos la imagen */
     z-index: 1; 
 }
 .image-container h4 {
     font-size: 350px; 
-    background-image: linear-gradient(to left, #d7a94b, #b18f61, #9e6b3e, #d7a94b);
+    background-image: linear-gradient(to left, #d7a94b, #b18f61, #9e6b3e, #d7a94b); /*Aplicamos un degradado de fondo de 4 colores con la siguiente direccion, de derecha a izquierda*/
     background-clip: text;
     -webkit-background-clip: text; 
     color: transparent; 
     font-family: 'Optimus Princeps';
     text-align: center;
-    transform: translateY(-15px); 
+    transform: translateY(-15px); /*Hacemos que el poscionamiento de la izquierda, utilice el 15%*/
     text-decoration: none;
     
 }
@@ -120,15 +120,15 @@ background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61); /*Añadimos u
 
 /*Css header htmls*/
 .header {
-    display: flex;
-    justify-content: space-between;
+    display: flex; /*Establecemos el contenedor flexible para los elementos del header, facilitando la distribución de espacio y alineacion de los elementos*/
+    justify-content: space-between; /*Justificamos el contenido poniendo un espacio entre medio de cada elemento*/
     align-items: center;
     background-color: black;    
-    position: fixed;
+    position: fixed; /*Fijamos la poscion del header*/
     top: 0;
-    left: 0;
+    left: 0;     /*Estos valores, posicionan el header en la parte superior de la pagina*/
     right: 0;
-    height: 80px;
+    height: 80px;    /*Establecemos una altura de 80px */
 }
 
 .logo {
@@ -137,11 +137,11 @@ background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61); /*Añadimos u
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    margin-left: 15px; 
+    margin-left: 15px; /*Añadimos un margen a la izquierda de 15px*/
 }
 
 .home-button {
-    margin-right: 20px;
+    margin-right: 20px /*Añadimos un margen a la derecha de 20px*/
     font-size: 40px;
     color: #b18f61; 
     transition: transform 0.3s, color 0.3s; 
@@ -161,26 +161,26 @@ background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61); /*Añadimos u
     transform: translateX(-50%); /* Centrar horizontalmente */
     padding: 20px;
     background-color: rgba(26, 26, 26, 0.9); /* Color de fondo semitransparente */
-    border-radius: 8px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    border-radius: 8px;    /*Añadimos un borde del radio de 8px*/ 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);  /*APlicamos sombra a la box de 10px y color negro*/
     margin-right: 20px; 
     font-family: "Bebas Neue", sans-serif;
     z-index: 10; /* Asegúrate de que el formulario esté por encima de otros elementos */
 }
 
-label {
-    display: block; 
+label { /*Modificamos los campos de los formularios*/
+    display: block; /*Bloquemoas la posicion del elemento*/
     margin-top: 0px; 
     color: #ffffff; 
 }
 
-input[type="text"],
+input[type="text"], /*Modificamos los inputs de texto y archivos*/
 input[type="file"],
 textarea {
-    width: 100%; 
-    padding: 8px; 
-    margin-top: 5px; 
-    border: 1px solid #333333; 
+    width: 100%; /*Ocuparan el 100% del amplio*/
+    padding: 8px; /*Establecemos un padding de 8 px*/
+    margin-top: 5px; /*Añadimos un margin en la parte superior de 5px*/
+    border: 1px solid #333333;  /*Añadimos un borde de 1px de manera solida */
     border-radius: 4px; 
     background-color: #333333; 
     color: #ffffff;
@@ -191,7 +191,7 @@ textarea {
     padding: 10px; 
     background-color: #d7a94b; 
     color: white; 
-    border: none;
+    border: none; /*A*/
     border-radius: 4px;
     cursor: pointer; 
 }
@@ -208,9 +208,9 @@ textarea {
     padding: 10px;
     background-color: #d7a94b;
     color: white;
-    border: none;
+    border: none; /*Eliminamos cualquier borde por defecto*/
     border-radius: 4px;
-    cursor: pointer;
+    cursor: pointer; /*Cambiamos el cursor  a un puntero*/
 }
 
 /*Css formulari editar canço*/
@@ -221,7 +221,7 @@ textarea {
     font-size: 40px;
     margin-bottom: 20px;
     font-family: "Bebas Neue", sans-serif;
-    letter-spacing: 1px;
+    letter-spacing: 1px; /*Añadimos un espacio de 1px entre letras*/
     text-align: center;
 }
 
@@ -241,9 +241,9 @@ textarea {
     height: 60px;
     width: 500px;
     background-image: inherit; /* Para heredar la imagen de fondo */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-position: center; /*Para centrar la imagen de fondo*/
+    background-repeat: no-repeat; /*Para que la imagen no se repita*/
+    background-size: cover; /*Para ajustar la imagen al contenedor*/
     overflow: hidden; /* Evitar que el contenido se salga del contenedor */
 }
 
@@ -257,14 +257,14 @@ textarea {
     background-image: inherit; /* Para heredar la imagen de fondo */
     background-size: cover;
     background-position: center;
-    filter: blur(12px); /* Efecto de desenfoque */
+    filter: blur(12px); /* Aplicamos un efecto de desenfoque */
 }
 
 /* Imagen de la carátula */
 .play-song-item img {
     width: 60px; /* Ancho de la imagen */
     height: 60px; /* Altura de la imagen */
-    border-radius: 5px; /* Opcional: para esquinas redondeadas */
+    border-radius: 5px; /* Ppara esquinas redondeadas */
     object-fit: cover; /* Para asegurarse de que la imagen mantenga sus proporciones */
     margin-right: 15px; /* Espacio entre la imagen y el texto */
     z-index: 2; /* Asegura que la imagen esté por encima del fondo difuminado */
@@ -274,7 +274,7 @@ textarea {
 .play-song-info {
     z-index: 2; /* Asegura que el texto esté por encima del fondo difuminado */
     color: white; /* Color del texto */
-    font-weight: bold;
+    font-weight: bold; /*Texto de manera bold*/
     font-family: "Bebas Neue", sans-serif;
 }
 
@@ -292,12 +292,11 @@ textarea {
 
 /*Css llista de cançons*/
 
-
 /*Css botones editar cancion y eliminar*/
 .button-container {
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+    justify-content: flex-end; /*Alinea todos los botones al final del contenedor*/
+    gap: 10px; /*Crea un espacio de 10px entre cada uno de los botones*/
     margin-left: auto; /* Para que los botones se alineen a la derecha */
 }
 
@@ -335,7 +334,7 @@ textarea {
 /*Css formulari afegir cançons*/
 .container-edit{
     display: flex;
-    align-items: end;
+    align-items: end; /*Alinear todos los elementos al final del contenedor*/
 }
 .edit-form { 
     width: 400px;     
@@ -408,7 +407,7 @@ body.gamebody {
     min-height: 100vh;
     font-family: Arial, sans-serif;
     color: white;
-    display: flex;
+    display: flex;            /*Utilizamos un diseño flexbox para alinear las columnas*/
     flex-direction: column;
     align-items: center;
 }
@@ -437,7 +436,7 @@ body.gamebody {
     font-size: 1.2rem;
     margin-bottom: 30px;
     max-width: 600px;
-    line-height: 1.5;
+    line-height: 1.5; /*Altura de la linea de 1.5*/
 }
 
 #gameStatus {
@@ -447,7 +446,7 @@ body.gamebody {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     margin: 20px auto;
-    max-width: 800px;
+    max-width: 800px; /*Ancho maximo de 800px*/
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -475,7 +474,7 @@ body.gamebody {
     color: white;
     font-size: 24px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
+    transition: all 0.2s ease; /*Aplicamos una transicion suave a todo de 0.2s*/
     cursor: pointer;
 }
 
