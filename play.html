@@ -6,39 +6,6 @@
     <title>Joc Interactiu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="src/CSS/style.css">   
-    <style>
-        /* Estilos básicos para el contenedor del juego */
-        .game-container {
-            position: relative;
-            height: 100vh; /* Altura total de la ventana */
-            overflow: hidden; /* Oculta los elementos fuera del contenedor */
-        }
-
-        /* Estilos para los elementos visuales */
-        .element {
-            width: 60px; /* Ancho de las flechas */
-            height: 60px; /* Altura de las flechas */
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            opacity: 1;
-            transition: transform 0.1s ease, background-color 0.3s ease; /* Transiciones para efectos visuales */
-        }
-
-        /* Animación de caída */
-        @keyframes fall {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh); /* Mueve el elemento hacia la parte inferior de la ventana */
-                opacity: 0; /* Desvanecer el elemento */
-            }
-        }
-    </style>
 </head>
 <body class="gamebody">
     <header class="header">
@@ -47,7 +14,7 @@
     </header>
 
     <div class="game-container">
-        <h1 class="game-title">Joc Interactiu</h1>
+        <h1 class="game-title">STEPMANIA</h1>
         <p>Prem les tecles de direcció quan apareguin en pantalla!</p>
     
         <div id="gameStatus">Prem ENTER per començar el joc!</div>
