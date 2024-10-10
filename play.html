@@ -5,8 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joc Interactiu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Asegúrate de que la ruta al CSS sea correcta -->
     <link rel="stylesheet" href="src/CSS/style.css">   
+    <style>
+        /* Estilos básicos para el contenedor del juego */
+        .game-container {
+            position: relative;
+            height: 100vh; /* Altura total de la ventana */
+            overflow: hidden; /* Oculta los elementos fuera del contenedor */
+        }
+
+        /* Estilos para los elementos visuales */
+        .element {
+            width: 60px; /* Ancho de las flechas */
+            height: 60px; /* Altura de las flechas */
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            opacity: 1;
+            transition: transform 0.1s ease, background-color 0.3s ease; /* Transiciones para efectos visuales */
+        }
+
+        /* Animación de caída */
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh); /* Mueve el elemento hacia la parte inferior de la ventana */
+                opacity: 0; /* Desvanecer el elemento */
+            }
+        }
+    </style>
 </head>
 <body class="gamebody">
     <header class="header">
@@ -23,167 +55,205 @@
     </div>
 
     <script>
-        class Game {
-            constructor() {
-                this.elements = [];
-                this.activeElements = new Set();
-                this.score = 0;
-                this.startTime = null;
-                this.elementsContainer = document.getElementById('elementsContainer');
-                this.gameStatus = document.getElementById('gameStatus');
-                this.isGameStarted = false;
+    class Game {
+    constructor() {
+        this.elements = [];
+        this.activeElements = new Set();
+        this.score = 0;
+        this.startTime = null;
+        this.elementsContainer = document.getElementById('elementsContainer');
+        this.gameStatus = document.getElementById('gameStatus');
+        this.isGameStarted = false;
+        this.spawnRate = 800; // Tiempo entre aparición de elementos en ms
+        this.lastSpawnTime = 0;
+        this.approachRate = 2000; // Tiempo que tarda el círculo en llegar abajo (ms)
+    }
+
+    init() {
+        this.gameStatus.textContent = 'Prem ENTER per començar el joc!';
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !this.isGameStarted) {
+                this.startGame();
+            }
+        });
+    }
+
+    startGame() {
+        this.isGameStarted = true;
+        this.score = 0;
+        this.startTime = Date.now();
+        this.lastSpawnTime = Date.now();
+        this.gameLoop();
+        
+        document.addEventListener('keydown', (e) => {
+            const key = e.keyCode;
+            if (this.activeElements.has(key)) {
+                this.handleKeyPress(key);
+            }
+        });
+
+        this.gameStatus.textContent = 'Joc iniciat! Prem les tecles quan els cercles arribin a baix!';
+    }
+
+    gameLoop() {
+        if (!this.isGameStarted) return;
+        
+        const currentTime = Date.now();
+
+        // Crear nuevo elemento basado en el spawnRate
+        if (currentTime - this.lastSpawnTime >= this.spawnRate) {
+            this.createVisualElement();
+            this.lastSpawnTime = currentTime;
+        }
+
+        // Actualizar la posición y tamaño de los elementos
+        const elements = document.getElementsByClassName('element');
+        for (let element of elements) {
+            const creationTime = parseInt(element.dataset.creationTime);
+            const elapsedTime = currentTime - creationTime;
+            const progress = elapsedTime / this.approachRate;
+
+            if (progress >= 1) {
+                this.missNote(element);
+                continue;
             }
 
-            init() {
-                // Mostrar mensaje inicial
-                this.gameStatus.textContent = 'Prem ENTER per començar el joc!';
+            // Actualizar posición
+            const startY = 0;
+            const endY = window.innerHeight - 100; // Posición final
+            const currentY = startY + (endY - startY) * progress;
+            element.style.top = `${currentY}px`;
+
+            // Actualizar tamaño del círculo exterior
+            const outerCircle = element.querySelector('.outer-circle');
+            const scale = 1 + (1 - progress);
+            outerCircle.style.transform = `scale(${scale})`;
+            outerCircle.style.opacity = progress;
+        }
+
+        requestAnimationFrame(() => this.gameLoop());
+    }
+
+    createVisualElement() {
+        const div = document.createElement('div');
+        div.className = 'element';
+        div.dataset.creationTime = Date.now().toString();
+
+        // Crear círculo exterior (approach circle)
+        const outerCircle = document.createElement('div');
+        outerCircle.className = 'outer-circle';
+        
+        // Crear círculo interior (hit circle)
+        const innerCircle = document.createElement('div');
+        innerCircle.className = 'inner-circle';
+
+        // Asignar posiciones horizontales aleatorias
+        const laneWidth = window.innerWidth / 4;
+        const randomLane = Math.floor(Math.random() * 4);
+        const xPos = laneWidth * randomLane + laneWidth / 2;
+        div.style.left = `${xPos}px`;
+        div.style.top = '0';
+
+        // Asignar tecla y flecha correspondiente
+        const keys = [37, 38, 39, 40]; // Izquierda, Arriba, Derecha, Abajo
+        const arrows = ['←', '↑', '→', '↓'];
+        const keyCode = keys[randomLane];
+        
+        innerCircle.textContent = arrows[randomLane];
+        this.activeElements.add(keyCode);
+        div.dataset.keyCode = keyCode;
+
+        div.appendChild(outerCircle);
+        div.appendChild(innerCircle);
+        this.elementsContainer.appendChild(div);
+    }
+
+    handleKeyPress(keyCode) {
+        const elements = document.getElementsByClassName('element');
+        for (let element of elements) {
+            if (parseInt(element.dataset.keyCode) === keyCode) {
+                const elementRect = element.getBoundingClientRect();
+                const elementCenter = elementRect.top + elementRect.height / 2;
+                const screenBottom = window.innerHeight - 100;
                 
-                // Agregar event listener para la tecla Enter
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && !this.isGameStarted) {
-                        this.startGame();
-                    }
-                });
-            }
-
-            startGame() {
-                this.isGameStarted = true;
-                // Datos de juego de ejemplo
-                const gameData = `4
-37 # 0.5 # 1.5
-38 # 1.0 # 2.0
-39 # 1.5 # 2.5
-40 # 2.0 # 3.0`;
-    
-                this.loadGameData(gameData);
-                this.start();
-            }
-
-            loadGameData(data) {
-                const lines = data.trim().split('\n');
-                const numElements = parseInt(lines[0]);
+                // Calcular la precisión basada en la distancia al punto ideal
+                const distance = Math.abs(elementCenter - screenBottom);
+                const maxDistance = 100; // Distancia máxima permitida para puntuar
                 
-                for (let i = 1; i <= numElements; i++) {
-                    const [keyCode, startTime, endTime] = lines[i].split('#').map(s => s.trim());
-                    this.elements.push({
-                        keyCode: parseInt(keyCode),
-                        startTime: parseFloat(startTime),
-                        endTime: parseFloat(endTime),
-                        color: this.getRandomColor(),
-                    });
+                if (distance <= maxDistance) {
+                    // Calcular puntuación basada en la precisión
+                    const accuracy = 1 - (distance / maxDistance);
+                    const points = Math.floor(300 * accuracy);
+                    
+                    this.score += points;
+                    this.showHitFeedback(element, accuracy);
+                    element.remove();
+                    return;
                 }
-            }
-
-            start() {
-                this.startTime = Date.now();
-                this.gameLoop();
-                
-                document.addEventListener('keydown', (e) => {
-                    const key = e.keyCode;
-                    if (this.activeElements.has(key)) {
-                        this.handleKeyPress(key);
-                    }
-                });
-    
-                this.gameStatus.textContent = 'Joc iniciat! Prem les tecles quan apareguin';
-            }
-
-            gameLoop() {
-                if (!this.isGameStarted) return;
-                
-                const currentTime = (Date.now() - this.startTime) / 1000;
-                
-                this.elementsContainer.innerHTML = '';
-                this.activeElements.clear();
-    
-                this.elements.forEach(element => {
-                    if (currentTime >= element.startTime && currentTime <= element.endTime) {
-                        this.activeElements.add(element.keyCode);
-                        this.createVisualElement(element);
-                    }
-                });
-    
-                if (currentTime <= this.elements[this.elements.length - 1].endTime) {
-                    requestAnimationFrame(() => this.gameLoop());
-                } else {
-                    this.endGame();
-                }
-            }
-
-            createVisualElement(element) {
-                const div = document.createElement('div');
-                div.className = 'element';
-                div.style.backgroundColor = element.color;
-                
-                // Centrar el elemento dentro del contenedor
-                div.style.position = 'absolute';
-                div.style.left = '50%';
-                div.style.top = '50%';
-                div.style.transform = 'translate(-50%, -50%)';
-
-                switch(element.keyCode) {
-                    case 37:
-                        div.innerHTML = '<i class="fas fa-arrow-left"></i>';
-                        break;
-                    case 38:
-                        div.innerHTML = '<i class="fas fa-arrow-up"></i>';
-                        break;
-                    case 39:
-                        div.innerHTML = '<i class="fas fa-arrow-right"></i>';
-                        break;
-                    case 40:
-                        div.innerHTML = '<i class="fas fa-arrow-down"></i>';
-                        break;
-                }
-                
-                this.elementsContainer.appendChild(div);
-            }
-
-            handleKeyPress(keyCode) {
-                this.score += 10;
-                this.gameStatus.textContent = `Puntuació: ${this.score} - Molt bé!`;
-                
-                const elements = document.getElementsByClassName('element');
-                for (let element of elements) {
-                    if (
-                        (keyCode === 37 && element.innerHTML.includes('fa-arrow-left')) ||
-                        (keyCode === 38 && element.innerHTML.includes('fa-arrow-up')) ||
-                        (keyCode === 39 && element.innerHTML.includes('fa-arrow-right')) ||
-                        (keyCode === 40 && element.innerHTML.includes('fa-arrow-down'))
-                    ) {
-                        element.style.transform = 'translate(-50%, -50%) scale(1.2)';
-                        element.style.backgroundColor = '#4CAF50';
-                        setTimeout(() => {
-                            element.style.transform = 'translate(-50%, -50%) scale(1)';
-                        }, 100);
-                    }
-                }
-            }
-
-            endGame() {
-                this.isGameStarted = false;
-                this.gameStatus.textContent = `Joc acabat! Puntuació final: ${this.score}. Prem ENTER per tornar a jugar!`;
-                setTimeout(() => {
-                    alert(`Joc acabat! Has aconseguit ${this.score} punts!`);
-                    // Reiniciar el juego
-                    this.elements = [];
-                    this.score = 0;
-                    this.activeElements.clear();
-                    this.elementsContainer.innerHTML = '';
-                }, 100);
-            }
-
-            getRandomColor() {
-                const colors = ['#FF4136', '#2ECC40', '#0074D9', '#FF851B', '#B10DC9'];
-                return colors[Math.floor(Math.random() * colors.length)];
             }
         }
-    
-        // Inicializar el juego al cargar la página
-        window.onload = () => {
-            const game = new Game();
-            game.init();
-        };
+    }
+
+    showHitFeedback(element, accuracy) {
+        const feedback = document.createElement('div');
+        feedback.className = 'hit-feedback';
+        
+        if (accuracy > 0.9) {
+            feedback.textContent = 'Perfect!';
+            feedback.style.color = '#FFD700';
+        } else if (accuracy > 0.7) {
+            feedback.textContent = 'Great!';
+            feedback.style.color = '#00FF00';
+        } else {
+            feedback.textContent = 'Good';
+            feedback.style.color = '#0088FF';
+        }
+
+        feedback.style.left = element.style.left;
+        feedback.style.top = element.style.top;
+        
+        this.elementsContainer.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 500);
+        
+        this.gameStatus.textContent = `Puntuació: ${this.score}`;
+    }
+
+    missNote(element) {
+        const feedback = document.createElement('div');
+        feedback.className = 'hit-feedback';
+        feedback.textContent = 'Miss';
+        feedback.style.color = '#FF0000';
+        feedback.style.left = element.style.left;
+        feedback.style.top = element.style.top;
+        
+        this.elementsContainer.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 500);
+        
+        element.remove();
+        
+        // Comprobar si perdemos por demasiados fallos
+        if (this.score > 0) this.score -= 50;
+        if (this.score < 0) this.endGame();
+    }
+
+    endGame() {
+        this.isGameStarted = false;
+        this.gameStatus.textContent = `Joc acabat! Puntuació final: ${this.score}. Prem ENTER per tornar a jugar!`;
+        setTimeout(() => {
+            alert(`Joc acabat! Has aconseguit ${this.score} punts!`);
+            this.elementsContainer.innerHTML = '';
+            this.score = 0;
+            this.activeElements.clear();
+        }, 100);
+    }
+}
+
+// Inicializar el juego al cargar la página
+window.onload = () => {
+    const game = new Game();
+    game.init();
+};
     </script>
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 </body>
