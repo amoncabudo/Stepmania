@@ -11,7 +11,7 @@
 }
 
 body {
-    background-color: #000000;
+    background-color: #000000; /*Cambiar color de fondo*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,6 +95,14 @@ background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61);
     color: rgba(255, 255, 255, 0.7);
     transform: scale(1.1); 
 
+}
+
+.copyright{
+    font-size: 15px;
+    background-image: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61);
+    background-clip: text;
+    -webkit-background-clip: text; 
+    color: transparent;    
 }
 
 .image-container {
@@ -414,154 +422,157 @@ body.gamebody {
     
 }
 
-/* Contingut principal */
+/* Contenedor del juego */
 .game-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .game-title {
-    font-size: 2.5rem;
-    text-align: center;
-    margin: 20px 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    color: #b18f61;
-
-
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #ffca3a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
-#game-containerp {
-    text-align: center;
+.gamebody p {
     font-size: 1.2rem;
-    margin-bottom: 30px;
-    max-width: 600px;
-    line-height: 1.5;
+    color: #ffffff;
 }
-
+.game-info{
+    margin-bottom: 10px;
+}
 #gameStatus {
-    text-align: center;
-    padding: 15px 30px;
-    font-size: 1.3rem;
-    animation: rgb alternate;
-    border-radius: 10px;
-    margin: 20px auto;
-    max-width: 800px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    
-}
-
-#elementsContainer {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    height: 300px;
-    margin: 20px auto;
-    background-color: transparent;
-    border-radius: 15px;
-    overflow: hidden;
-    border: 2px solid #b18f61;
-    animation: border-rgb 2s linear infinite;
-
-}
-
-/* Elements del joc */
-.element {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
-    cursor: pointer;
-    animation: rgb 3s infinite; /* Aplicar la animación */
-
-}
-
-.element:hover {
-    transform: scale(1.05);
-}
-
-.element i {
+    margin-top: 10px;
     font-size: 1.5rem;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-}
-/* Estilos básicos para el contenedor del juego */
-.game-container {
-    position: relative;
-    height: 100vh; /* Altura total de la ventana */
-    overflow: hidden; /* Oculta los elementos fuera del contenedor */
+    color: #ffca3a;
+    margin-bottom: 10px;
 }
 
-/* Estilos para los elementos visuales */
+/* Rectángulo del juego con 4 carriles */
+#gameRectangle {
+    position: relative;
+    width: 80vh; /* Rectángulo más ancho */
+    height: 60vh; /* Rectángulo más alto */
+    margin: 0 auto;
+    border: 2px solid #ffca3a;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+/* Elementos del juego */
 .element {
-    width: 60px; /* Ancho de las flechas */
-    height: 60px; /* Altura de las flechas */
     position: absolute;
+    width: 100px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
-    opacity: 1;
-    animation: rgb 2s linear infinite;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 10;
 }
 
-/* Animación de caída */
-@keyframes fall {
+.outer-circle {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 3px solid #00a8e8;
+    border-radius: 50%;
+    animation: outer-circle-animation 2s linear infinite;
+    opacity: 0.8;
+    z-index: -1;
+}
+
+.inner-circle {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-color: #0077b6;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 15px rgba(0, 119, 182, 0.7);
+}
+
+/* Animación del círculo externo */
+@keyframes outer-circle-animation {
     0% {
-        transform: translateY(0);
+        transform: scale(1);
         opacity: 1;
     }
     100% {
-        transform: translateY(100vh); /* Mueve el elemento hacia la parte inferior de la ventana */
-        opacity: 0; /* Desvanecer el elemento */
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+}
+
+/* Feedback cuando se acierta o falla una nota */
+.hit-feedback {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    animation: fadeout 0.5s ease-out;
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }
 
 
-@keyframes rgb{
-0%{
-    color: red;
-}
-25%{
-    color: rgb(31, 212, 31);
-}
-50%{
-    color: rgb(88, 190, 246);
-}
-75%{
-    color: rgb(201, 18, 201);
-}
-100%{
-    color: yellow;
-}
-    
+/* Ajustar layout para pantallas pequeñas */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 2.5rem;
+    }
+
+    #gameRectangle {
+        width: 80%;
+        height: 60vh;
+    }
+
+    .element {
+        width: 80px;
+        height: 80px;
+    }
+
+    .outer-circle {
+        width: 100px;
+        height: 100px;
+    }
 }
 
-@keyframes border-rgb{
-    0%{
-        border-color: blue;
-    }
-    25%{
-        border-color: yellow;
-    }
-    50%{
-        border-color: fuchsia;
-    }
-    75%{
-        border-color: white;
-    }
-    100%{
-        border-color: red;
-    }
-        
-    }
+
+/* Información de la canción */
+.song-info-container {
+    position: fixed;
+    top: 20%;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 200px;
+    text-align: left;
+}
+
+/* Barra de progreso */
+.progress-bar {
+    width: 0;
+    height: 5px;
+    background-color: #00FF00;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.song-info-container h2 {
+    margin-top: 0;
+}
