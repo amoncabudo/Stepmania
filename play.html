@@ -76,7 +76,7 @@ class Game {
         this.updateSongInfo(); // Actualizar la información de la canción al cargar
 
         this.gameStatus.textContent = 'Prem ENTER per començar el joc!';
-        
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !this.isGameStarted) {
                 this.startGame();
@@ -128,7 +128,7 @@ class Game {
         this.missCount = 0; // Reiniciar el contador de fallos al iniciar el juego
         this.startTime = Date.now();
         this.lastSpawnTime = Date.now();
-        
+
         // Usar la API multimedia para reproducir la canción
         this.audio.play();
 
@@ -182,9 +182,6 @@ class Game {
     }
 
     createVisualElement() {
-        // Solo crear una nueva flecha cuando no hay una flecha activa del mismo tipo
-        if (this.activeElements.size > 0) return; // No permitir que se cree una nueva flecha hasta que la actual haya sido presionada
-
         const div = document.createElement('div');
         div.className = 'element';
         div.dataset.creationTime = Date.now().toString();
@@ -198,7 +195,7 @@ class Game {
         innerCircle.className = 'inner-circle';
 
         const gameRectangle = document.getElementById('gameRectangle');
-        
+
         // Posicionar en la parte superior del rectángulo (top = 0)
         const xPos = Math.random() * (gameRectangle.offsetWidth - 100); // Posición horizontal aleatoria
         div.style.left = `${xPos}px`;
@@ -215,23 +212,29 @@ class Game {
         div.appendChild(outerCircle);
         div.appendChild(innerCircle);
         this.elementsContainer.appendChild(div);
+
+        // Avanzar al siguiente tipo de flecha en la secuencia
+        this.currentArrowIndex = (this.currentArrowIndex + 1) % this.arrowSequence.length;
     }
 
     handleKeyPress(keyCode) {
         const elements = document.getElementsByClassName('element');
+        let foundElement = null;
+
+        // Buscar el elemento correspondiente a la tecla presionada
         for (let element of elements) {
             if (parseInt(element.dataset.keyCode) === keyCode) {
-                // Eliminar la comprobación de distancia, basta con que sea la tecla correcta
-                this.score += 100; // Puedes ajustar el puntaje aquí
-                this.showHitFeedback(element, 1); // Mostrar feedback de acierto
-                element.remove();
-                this.activeElements.delete(keyCode); // Eliminar el elemento activo tras ser acertado
-
-                // Avanzar al siguiente tipo de flecha en la secuencia
-                this.currentArrowIndex = (this.currentArrowIndex + 1) % this.arrowSequence.length;
-
-                return;
+                foundElement = element;
+                break;
             }
+        }
+
+        if (foundElement) {
+            // Eliminar la comprobación de distancia, basta con que sea la tecla correcta
+            this.score += 100; // Puedes ajustar el puntaje aquí
+            this.showHitFeedback(foundElement, 1); // Mostrar feedback de acierto
+            foundElement.remove();
+            this.activeElements.delete(keyCode); // Eliminar el elemento activo tras ser acertado
         }
     }
 
@@ -250,6 +253,7 @@ class Game {
     }
 
     missNote(element) {
+        const keyCode = parseInt(element.dataset.keyCode);
         const feedback = document.createElement('div');
         feedback.className = 'hit-feedback';
         feedback.textContent = 'Miss';
@@ -261,6 +265,7 @@ class Game {
         setTimeout(() => feedback.remove(), 500);
 
         element.remove();
+        this.activeElements.delete(keyCode); // Asegurarse de eliminar la flecha activa al fallar
 
         // Incrementar el contador de fallos
         this.missCount++;
