@@ -1,0 +1,17 @@
+[
+    {
+        "nombre": "alex",
+        "puntuacion": 4800,
+        "fecha": "2024-10-15 15:35:30"
+    },
+    {
+        "nombre": "ulises",
+        "puntuacion": 4200,
+        "fecha": "2024-10-15 16:06:38"
+    },
+    {
+        "nombre": "arnau",
+        "puntuacion": 5700,
+        "fecha": "2024-10-15 16:20:55"
+    }
+]

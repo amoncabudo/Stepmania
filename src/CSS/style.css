@@ -438,7 +438,7 @@ input::file-selector-button {
     cursor: pointer;
 }
 
-/*Css formulari afegir cançons*/
+/*Css formulari editar cançons*/
 
 /*Css Joc*/
 /* Estils generals */
@@ -650,4 +650,51 @@ input::file-selector-button {
     .song-details p {
         font-size: 0.9rem;
     }
+}
+
+/*Css CLASIFICACIONES*/
+   /* Centrando el título y ajustando la tabla */
+.body-ranking{
+    align-items: center;
+}
+
+.titulo{
+    position: relative;
+    display: flex;
+}
+
+.titulo-clasificaciones {
+    text-align: center;
+    color: gold;
+    font-size: 2rem;
+}
+
+/* Ajustando la tabla */
+table {
+    width: 100%;
+    margin: 0 20px  20px  0; /* Centrar la tabla */
+    border-collapse: collapse;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #ffffff;
+}
+
+th {
+    background-color: #d7a94b;
+    color: white;
+}
+
+td {
+    background-color: #333333;
+}
+
+.tabla-clasificaciones{
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 35px 0 35px;    
 }
