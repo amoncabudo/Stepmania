@@ -11,30 +11,36 @@
         <a href="listarcanciones.html" class="logo">ᚠ</a>
         <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
     </header>
-<div class="container-edit">
-    <div class="edit-form">
-        <h5>Editar Canción</h5>
-        <form id="editSongForm">
-            <input type="hidden" id="songId" name="id" value="1">
-            
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
+    <div class="container-edit">
+        <div class="edit-form">
+            <h5>Editar Canción</h5>
+            <form id="editSongForm">
+                <input type="hidden" id="songId" name="id" value="1">
+                
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" required>
 
-            <label for="artista">Artista:</label>
-            <input type="text" id="artista" name="artista" required>
+                <label for="artista">Artista:</label>
+                <input type="text" id="artista" name="artista" required>
 
-            <label for="musica">Archivo MP3:</label>
-            <input type="file" id="musica-btn" name="musica" accept="audio/*" required>
+                <label for="musica">Archivo MP3:</label>
+                <input type="file" id="musica-btn" name="musica" accept="audio/*" required>
 
-            <label for="caratula">Portada:</label>
-            <input type="file" id="caratula" name="caratula" accept="image/*" required>
+                </audio>
 
-            <button type="submit">Guardar Cambios</button>
-            <div id="message"></div> <!-- Para mostrar mensajes de error o éxito -->
-            </div>
+                <div class="caratula-container">
+                    <div class="form-group">
+                        <label for="caratula">Portada:</label>
+                        <input type="file" id="caratula" name="caratula" accept="image/*" required>
+                   
 
-        </form>
-        <a href="listarcanciones.html" class="vovler-btn"><ion-icon name="arrow-round-back"></ion-icon></a>
+                        <div class="button-container">
+                            <button type="submit">Guardar Cambios</button>
+                            <a href="listarcanciones.html" class="volver-btn"><ion-icon name="arrow-round-back"></ion-icon></a>
+                        </div>
+                        <div id="message"></div> <!-- Para mostrar mensajes de error o éxito -->
+                        
+        </div>
     </div>
 
     <script>
@@ -57,16 +63,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Mostrar la carátula actual
                     if (cancion.archivoCaratula) {
-                        document.getElementById('caratulaPreview').src = cancion.archivoCaratula;
+                        document.getElementById('caratulaPreview').src = `src/PHP/${cancion.archivoCaratula}`;
                     }
                     
                     // Configurar el audio actual
-                    if (cancion.audio) {
-                        document.getElementById('audioPreview').src = cancion.audio;
+                    if (cancion.archivoMusica) {
+                        document.getElementById('audioPreview').src = `src/PHP/${cancion.archivoMusica}`;
                     }
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error al cargar la canción:', error));
     }
 
     // Manejar la previsualización de la carátula
@@ -77,6 +83,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('caratulaPreview').src = e.target.result;
             };
             reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // Manejar la previsualización del archivo de música
+    document.getElementById('musica-btn').addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            const audioPreview = document.getElementById('audioPreview');
+            const fileURL = URL.createObjectURL(this.files[0]);
+            audioPreview.src = fileURL;
+            audioPreview.load(); // Para recargar el reproductor de audio
         }
     });
 
@@ -100,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error al actualizar la canción:', error);
             alert('Error al actualizar la canción');
         });
     });

@@ -1,20 +1,11 @@
 [
     {
-        "id": "cancion_66fc06b0443b15.91545932",
-        "titulo": "Stay With Me",
-        "artista": "1nonly",
-        "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Tiakola x Dave - Meridian (Clip officiel).mp3",
-        "archivoCaratula": "uploads\/caratulas\/670026fc27dc5.jpg",
-        "archivoTexto": null
-    },
-    {
         "id": "cancion_66fc06ca95cb03.23310741",
         "titulo": "VIBEZ",
         "artista": "KHEA",
         "descripcion": null,
         "archivoMusica": "uploads\/musica\/KHEA, Awesome Pierre - VIBEZ (Visualizer).mp3",
-        "archivoCaratula": "uploads\/caratula\/vibrz.jpeg",
+        "archivoCaratula": "uploads\/caratulas\/vibrz.jpeg",
         "archivoTexto": null
     },
     {
@@ -51,6 +42,15 @@
         "descripcion": null,
         "archivoMusica": "uploads\/musica\/Lithe - Fall Back ft. Lil Tjay.mp3",
         "archivoCaratula": "uploads\/caratula\/fallback.jpg",
+        "archivoTexto": null
+    },
+    {
+        "id": "cancion_67040854723192.31201782",
+        "titulo": "REAL GANGSTA LOVE",
+        "artista": "Trueno",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/Trueno - REAL GANGSTA LOVE (Visualizer).mp3",
+        "archivoCaratula": "uploads\/caratula\/real gangsta love.jpeg",
         "archivoTexto": null
     }
 ]

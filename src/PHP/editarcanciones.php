@@ -1,85 +1,91 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $response = ['success' => false, 'message' => ''];
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    // Leer el archivo JSON existente
-    $json_file = 'playlist.json';
-    $canciones = file_exists($json_file) ? json_decode(file_get_contents($json_file), true) : array();
+header('Content-Type: application/json');
 
-    $songId = isset($_POST['songId']) ? $_POST['songId'] : null;
-
-    if ($songId !== null && isset($canciones[$songId])) {
-        try {
-            // Actualizar datos básicos
-            $canciones[$songId]['titulo'] = $_POST['titulo'];
-            $canciones[$songId]['artista'] = $_POST['artista'];
-            $canciones[$songId]['descripcion'] = $_POST['descripcion'] ?? '';
-
-            // Manejar archivo de música
-            if (isset($_FILES['musica']) && $_FILES['musica']['error'] === UPLOAD_ERR_OK) {
-                $musica_dir = 'uploads/audios/';
-                if (!is_dir($musica_dir)) {
-                    mkdir($musica_dir, 0777, true);
-                }
-
-                // Eliminar el archivo anterior si existe
-                if (isset($canciones[$songId]['archivoMusica']) && file_exists($canciones[$songId]['archivoMusica'])) {
-                    unlink($canciones[$songId]['archivoMusica']); // Borrar el archivo de música anterior
-                }
-
-                // Generar nombre único para el archivo
-                $extension = pathinfo($_FILES['musica']['name'], PATHINFO_EXTENSION);
-                $nuevo_nombre = uniqid('audio_') . '.' . $extension;
-                $musica_file = $musica_dir . $nuevo_nombre;
-
-                // Mover el nuevo archivo al directorio y actualizar JSON
-                if (move_uploaded_file($_FILES['musica']['tmp_name'], $musica_file)) {
-                    $canciones[$songId]['archivoMusica'] = $musica_file; // Actualizar con el nuevo archivo
-                    $canciones[$songId]['audioTimestamp'] = time(); // Agregar timestamp para evitar caché
-                } else {
-                    throw new Exception("Error al mover el archivo de música.");
-                }
-            }
-
-            // Manejar archivo de carátula (similar al audio)
-            if (isset($_FILES['caratula']) && $_FILES['caratula']['error'] === UPLOAD_ERR_OK) {
-                $caratula_dir = 'uploads/caratula/';
-                if (!is_dir($caratula_dir)) {
-                    mkdir($caratula_dir, 0777, true);
-                }
-
-                if (isset($canciones[$songId]['archivoCaratula']) && file_exists($canciones[$songId]['archivoCaratula'])) {
-                    unlink($canciones[$songId]['archivoCaratula']); // Borrar la carátula anterior
-                }
-
-                $extension = pathinfo($_FILES['caratula']['name'], PATHINFO_EXTENSION);
-                $nuevo_nombre = uniqid('caratula_') . '.' . $extension;
-                $caratula_file = $caratula_dir . $nuevo_nombre;
-
-                if (move_uploaded_file($_FILES['caratula']['tmp_name'], $caratula_file)) {
-                    $canciones[$songId]['archivoCaratula'] = $caratula_file;
-                    $canciones[$songId]['caratulaTimestamp'] = time();
-                } else {
-                    throw new Exception("Error al mover el archivo de carátula.");
-                }
-            }
-
-            // Guardar cambios en el archivo JSON
-            if (file_put_contents($json_file, json_encode($canciones, JSON_PRETTY_PRINT))) {
-                $response['success'] = true;
-                $response['message'] = 'Canción actualizada correctamente';
-            } else {
-                throw new Exception("Error al guardar los cambios en el archivo JSON.");
-            }
-
-        } catch (Exception $e) {
-            $response['message'] = $e->getMessage();
-        }
-    } else {
-        $response['message'] = "La canción no existe.";
+try {
+    if (!isset($_POST['id'])) {
+        throw new Exception('No se proporcionó ID');
     }
 
-    echo json_encode($response);
-    exit();
+    $baseDir = __DIR__;
+    $uploadDir = 'uploads/';
+    $caratulasDir = $uploadDir . 'caratulas/';
+    $audiosDir = $uploadDir . 'musica/';
+    $jsonFile = 'playlist.json';
+
+    // Leer el archivo JSON existente
+    $jsonContent = file_get_contents($jsonFile);
+    $canciones = json_decode($jsonContent, true);
+
+    $songId = $_POST['id'];
+    $cancionIndex = array_search($songId, array_column($canciones, 'id'));
+
+    if ($cancionIndex === false) {
+        throw new Exception('Canción no encontrada');
+    }
+
+    // Actualizar los datos básicos
+    $canciones[$cancionIndex]['titulo'] = $_POST['titulo'];
+    $canciones[$cancionIndex]['artista'] = $_POST['artista'];
+
+    // Manejar el archivo de música
+    if (isset($_FILES['musica']) && $_FILES['musica']['error'] === UPLOAD_ERR_OK) {
+        $musica_dir = $audiosDir;
+        if (!is_dir($musica_dir)) {
+            mkdir($musica_dir, 0777, true);
+        }
+
+        // Eliminar el archivo anterior si existe
+        if (isset($canciones[$cancionIndex]['archivoMusica']) && file_exists($canciones[$cancionIndex]['archivoMusica'])) {
+            unlink($canciones[$cancionIndex]['archivoMusica']);
+        }
+
+        // Guardar el nuevo archivo de música
+        $musica_file = $musica_dir . basename($_FILES['musica']['name']);
+        if (move_uploaded_file($_FILES['musica']['tmp_name'], $musica_file)) {
+            $canciones[$cancionIndex]['archivoMusica'] = $musica_file;
+        } else {
+            throw new Exception("Error al mover el archivo de música.");
+        }
+    }
+
+    // Manejar el archivo de carátula
+    if (isset($_FILES['caratula']) && $_FILES['caratula']['error'] === UPLOAD_ERR_OK) {
+        $caratula_dir = $caratulasDir;
+        if (!is_dir($caratula_dir)) {
+            mkdir($caratula_dir, 0777, true);
+        }
+
+        // Eliminar la carátula anterior si existe
+        if (isset($canciones[$cancionIndex]['archivoCaratula']) && file_exists($canciones[$cancionIndex]['archivoCaratula'])) {
+            unlink($canciones[$cancionIndex]['archivoCaratula']);
+        }
+
+        // Guardar la nueva carátula
+        $caratula_file = $caratula_dir . basename($_FILES['caratula']['name']);
+        if (move_uploaded_file($_FILES['caratula']['tmp_name'], $caratula_file)) {
+            $canciones[$cancionIndex]['archivoCaratula'] = $caratula_file;
+        } else {
+            throw new Exception("Error al mover la carátula.");
+        }
+    }
+
+    // Guardar los cambios en el archivo JSON
+    if (file_put_contents($jsonFile, json_encode($canciones, JSON_PRETTY_PRINT)) === false) {
+        throw new Exception('Error al guardar los cambios en el JSON');
+    }
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Canción actualizada correctamente',
+        'cancion' => $canciones[$cancionIndex]
+    ]);
+
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
 }
-?>

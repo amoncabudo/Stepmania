@@ -79,22 +79,11 @@
                     playButton.innerHTML = '<i class="fa-solid fa-play"></i>';  // Ícono de reproducir
                     playButton.classList.add('play-button');
 
-                    // Crear el reproductor de audio (oculto)
-                    const audioPlayer = document.createElement('audio');
-                    audioPlayer.src = `src/PHP/${cancion.archivoMusica}`; // Usar la ruta completa para el archivo de música
-                    audioPlayer.classList.add('song-audio'); // Aplicar clase CSS si es necesario
-                    audioPlayer.preload = 'metadata'; // Precargar metadatos
-
-                    // Manejo de errores del audio
-                    audioPlayer.onerror = function() {
-                        console.error(`Error al cargar el archivo de audio: ${audioPlayer.src}`);
-                        alert(`Error al cargar el audio: ${cancion.titulo}`);
-                    };
-
-                    // Funcionalidad para reproducir/pausar la canción
+                    // Funcionalidad para reproducir la canción
                     playButton.addEventListener('click', (event) => {
                         event.stopPropagation();  // Evita que el clic en el botón se propague
-                        togglePlay(audioPlayer, playButton);
+                        // Llamar a la función playSong con los datos de la canción
+                        playSong(cancion.archivoMusica, cancion.titulo, cancion.artista);
                     });
 
                     // Añadir los botones al contenedor de la canción
@@ -108,38 +97,12 @@
                     songItem.appendChild(caratula);
                     songItem.appendChild(songInfo);
                     songItem.appendChild(buttonContainer);
-                    songItem.appendChild(audioPlayer);  // Añadir el reproductor de audio (oculto)
 
                     // Añadir la nueva canción al listado
                     songList.appendChild(songItem);
                 });
             })
             .catch(error => console.error('Error al cargar el JSON:', error));
-
-        // Función para reproducir o pausar la canción
-        function togglePlay(audio, playButton) {
-            const icon = playButton.querySelector('i'); // Selecciona el icono dentro del botón
-            if (audio.paused) {
-                // Pausar cualquier otra canción que esté sonando
-                document.querySelectorAll('audio').forEach(el => el.pause());
-                document.querySelectorAll('.play-button i').forEach(icon => {
-                    icon.classList.remove('fa-pause');
-                    icon.classList.add('fa-play');
-                });
-
-                // Reproducir la canción seleccionada
-                audio.play().catch(err => {
-                    console.error('Error al intentar reproducir la canción:', err);
-                    alert(`No se pudo reproducir "${audio.src}". Verifica la ruta del archivo.`);
-                });
-                icon.classList.remove('fa-play');
-                icon.classList.add('fa-pause');
-            } else {
-                audio.pause();
-                icon.classList.remove('fa-pause');
-                icon.classList.add('fa-play');
-            }
-        }
 
         // Función para eliminar una canción
         function eliminarCancion(id) {
@@ -159,6 +122,13 @@
                 .catch(error => console.error('Error:', error));
             }
         }
+
+        // Función para redirigir al juego con los datos de la canción seleccionada
+        function playSong(archivoMusica, titulo, artista) {
+            const gameUrl = `play.html?song=${encodeURIComponent(archivoMusica)}&name=${encodeURIComponent(titulo)}&artist=${encodeURIComponent(artista)}`;
+            window.location.href = gameUrl; // Redirigir al juego con la URL
+        }
+    
     </script>
 
     <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>

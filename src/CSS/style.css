@@ -164,10 +164,10 @@ background: linear-gradient(to bottom, #b18f61, #d9d1ad, #b18f61);
 /*Css formulari afegir cançons*/
 .form-container {
     position: fixed; /* Cambiar a fixed */
-    top: 40px; /* Espaciado desde la parte superior (ajusta según sea necesario) */
+    top: 50px; /* Espaciado desde la parte superior (ajusta según sea necesario) */
     left: 50%;
     transform: translateX(-50%); /* Centrar horizontalmente */
-    padding: 20px;
+    padding:  10px 30px 10px 30px ;
     background-color: rgba(26, 26, 26, 0.9); /* Color de fondo semitransparente */
     border-radius: 8px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
@@ -340,16 +340,21 @@ textarea {
 
 }
 
-/*Css formulari afegir cançons*/
-.container-edit{
-    display: flex;
-    align-items: end;
-}
-.edit-form { 
-    width: 400px;     
-    justify-content: flex-start; 
-    margin-top: 10px; 
+/*Css formulari editar cançons*/
+/* Ajuste del fondo del formulario */
+.container-edit {
+    position: relative;
+    left: 20%;
+    transform: translateX(-50%);
+    padding: 20px 40px;
+    background-color: rgba(26, 26, 26, 0.9); /* Color de fondo semitransparente */
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    width: 40%; /* Ajustar el ancho del formulario */
+    max-width: 800px; /* Máximo ancho del formulario */
     font-family: "Bebas Neue", sans-serif;
+
 }
 
 label {
@@ -358,33 +363,29 @@ label {
     color: #ffffff; 
 }
 
+/* Ajuste de los inputs del formulario */
 input[type="text"],
 input[type="file"],
 textarea {
-    width: 100%; 
-    padding: 8px; 
-    margin-top: 5px; 
-    border: 1px solid #333333; 
-    border-radius: 4px; 
-    background-color: #333333; 
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    background-color: #333333;
     color: #ffffff;
 }
 
+/* Alinear los botones en una fila */
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Para que "Guardar Cambios" y "Volver" se separen */
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Estilo para el botón de "Guardar Cambios" */
 .edit-form button {
-    margin-top: 10px; 
-    padding: 10px; 
-    background-color: #d7a94b; 
-    color: white; 
-    border: none;
-    border-radius: 4px;
-    cursor: pointer; 
-}
-
-.edit-form button:hover {
-    background-color: #f2a814; 
-}
-
-.file-input-container input::file-selector-button{
     padding: 10px;
     background-color: #d7a94b;
     color: white;
@@ -392,40 +393,62 @@ textarea {
     border-radius: 4px;
     cursor: pointer;
 }
-.vovler-btn {
-    display: flex;
-    position: absolute;
-    margin-right: 20px;
-    left: 945px;
-    font-size: 40px;
-    color: #b18f61; 
-    transition: transform 0.3s, color 0.3s; 
+
+.edit-form button:hover {
+    background-color: #f2a814;
 }
 
-.vovler-btn:hover {
-    color: rgba(255, 255, 255, 0.7);
+/* Estilo para el botón de "Volver" */
+.volver-btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    color: #d7a94b;
+    border-radius: 4px;
+    font-size: 24px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.volver-btn:hover {
+    color: #FFF;
     transform: scale(1.1);
 }
+
+@media (max-width: 768px) {
+    .volver-btn {
+        position: relative; /* Asegurar que el botón no use posición fija */
+        left: 0;
+        margin-right: 0;
+        margin-left: auto; /* Alinear a la derecha en pantallas pequeñas */
+    }
+}
+
+
+/* Estilos adicionales del formulario */
+.edit-form h5 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+input::file-selector-button {
+    padding: 10px;
+    background-color: #d7a94b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 /*Css formulari afegir cançons*/
 
 /*Css Joc*/
 /* Estils generals */
-body.gamebody {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-family: "Bebas Neue", sans-serif;
-    color: #b18f61;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-}
-
-/* Contenedor del juego */
-.game-container {
+ /* Contenedor del juego */
+ .game-container {
     text-align: center;
     margin-top: 20px;
+    font-family: "Bebas Neue", sans-serif;
+ 
 }
 
 .game-title {
@@ -440,9 +463,11 @@ body.gamebody {
     font-size: 1.2rem;
     color: #ffffff;
 }
-.game-info{
+
+.game-info {
     margin-bottom: 10px;
 }
+
 #gameStatus {
     margin-top: 10px;
     font-size: 1.5rem;
@@ -453,11 +478,11 @@ body.gamebody {
 /* Rectángulo del juego con 4 carriles */
 #gameRectangle {
     position: relative;
-    width: 80vh; /* Rectángulo más ancho */
-    height: 60vh; /* Rectángulo más alto */
+    width: 80vh;
+    height: 60vh;
     margin: 0 auto;
-    border: 2px solid #ffca3a;
-    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid #b18f61;
+    background-color: transparent;
     overflow: hidden;
 }
 
@@ -488,8 +513,8 @@ body.gamebody {
 
 .inner-circle {
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background-color: #0077b6;
     border-radius: 50%;
     display: flex;
@@ -527,7 +552,6 @@ body.gamebody {
     }
 }
 
-
 /* Ajustar layout para pantallas pequeñas */
 @media (max-width: 768px) {
     .game-title {
@@ -550,7 +574,6 @@ body.gamebody {
     }
 }
 
-
 /* Información de la canción */
 .song-info-container {
     position: fixed;
@@ -564,6 +587,13 @@ body.gamebody {
     text-align: left;
 }
 
+.song-info-container h2 {
+    margin-top: 0;
+}
+
+
+
+
 /* Barra de progreso */
 .progress-bar {
     width: 0;
@@ -571,8 +601,4 @@ body.gamebody {
     background-color: #00FF00;
     border-radius: 5px;
     margin-bottom: 10px;
-}
-
-.song-info-container h2 {
-    margin-top: 0;
 }

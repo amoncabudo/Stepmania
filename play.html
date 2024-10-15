@@ -1,306 +1,297 @@
 <!DOCTYPE html>
-<html lang="ca">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joc Interactiu</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
     <link rel="stylesheet" href="src/CSS/style.css" />
-  </head>
-  <body class="gamebody">
+</head>
+<body class="gamebody">
     <header class="header">
-      <a href="#" class="logo">ᚠ</a>
-      <a href="index.html" class="home-button"
-        ><ion-icon name="home"></ion-icon
-      ></a>
+        <a href="#" class="logo">ᚠ</a>
+        <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
     </header>
 
     <div class="game-container">
-      <h1 class="game-title">STEPMANIA</h1>
-      <p class="game-info">
-        Prem les tecles de direcció quan apareguin en pantalla!
-      </p>
-      <div id="gameStatus">Prem ENTER per començar el joc!</div>
+        <h1 class="game-title">STEPMANIA</h1>
+        <p class="game-info">
+            Prem les tecles de direcció quan apareguin en pantalla!
+        </p>
+        <div id="gameStatus">Prem ENTER per començar el joc!</div>
 
-      <!-- Nuevo rectángulo contenedor -->
-      <div id="gameRectangle">
-        <div id="elementsContainer"></div>
-      </div>
+        <!-- Nuevo rectángulo contenedor -->
+        <div id="gameRectangle">
+            <div id="elementsContainer"></div>
+        </div>
     </div>
     
     <!-- Contenedor para mostrar la información de la canción -->
     <div class="song-info-container" id="songInfo">
-      <!-- Barra de progreso encima de la información -->
-      <div class="progress-bar" id="progressBar"></div>
+        <!-- Barra de progreso encima de la información -->
+        <div class="progress-bar" id="progressBar"></div>
 
-      <h2>Información de la canción</h2>
-      <p><strong>Nombre:</strong> <span id="songName">Nombre de la canción</span></p>
-      <p><strong>Artista:</strong> <span id="artistName">Artista</span></p>
-      <p><strong>Duración:</strong> <span id="songDuration">0:00</span></p>
+        <h2>Información de la canción</h2>
+        <p><strong>Nombre:</strong> <span id="songName">Nombre de la canción</span></p>
+        <p><strong>Artista:</strong> <span id="artistName">Artista</span></p>
+        <p><strong>Duración:</strong> <span id="songDuration">0:00</span></p>
     </div>
 
     <!-- Añadir el archivo de audio -->
-    <audio id="gameSong" src="ruta/de/la/cancion.mp3" preload="auto"></audio>
-    <!-- Cambia la ruta al archivo de la canción -->
+    <audio id="gameSong" preload="auto"></audio> <!-- El src será asignado dinámicamente -->
 
     <script>
-class Game {
-    constructor() {
-        this.elements = [];
-        this.activeElements = new Set();
-        this.score = 0;
-        this.missCount = 0; // Nueva variable para contar fallos
-        this.startTime = null;
-        this.elementsContainer = document.getElementById('elementsContainer');
-        this.gameStatus = document.getElementById('gameStatus');
-        this.songInfo = document.getElementById('songInfo');
-        this.songName = document.getElementById('songName');
-        this.artistName = document.getElementById('artistName');
-        this.songDuration = document.getElementById('songDuration');
-        this.progressBar = document.getElementById('progressBar'); // Barra de progreso
-        this.isGameStarted = false;
-        this.spawnRate = 800; // Tiempo entre aparición de elementos en ms
-        this.lastSpawnTime = 0;
-        this.approachRate = 2000; // Tiempo que tarda el círculo en llegar abajo (ms)
-        this.audio = document.getElementById('gameSong'); // Obtener el elemento de la canción
-
-        // Nueva propiedad para manejar la secuencia de teclas
-        this.arrowSequence = [37, 38, 39, 40]; // Teclas de flechas: ←, ↑, →, ↓
-        this.currentArrowIndex = 0; // Índice para seguir el orden de aparición de las flechas
-    }
-
-    init() {
-        this.updateSongInfo(); // Actualizar la información de la canción al cargar
-
-        this.gameStatus.textContent = 'Prem ENTER per començar el joc!';
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !this.isGameStarted) {
+        class Game {
+            constructor() {
+                this.elements = [];
+                this.activeElements = new Set();
+                this.score = 0;
+                this.missCount = 0;
+                this.startTime = null;
+                this.elementsContainer = document.getElementById('elementsContainer');
+                this.gameStatus = document.getElementById('gameStatus');
+                this.songInfo = document.getElementById('songInfo');
+                this.songName = document.getElementById('songName');
+                this.artistName = document.getElementById('artistName');
+                this.songDuration = document.getElementById('songDuration');
+                this.progressBar = document.getElementById('progressBar');
+                this.isGameStarted = false;
+                this.spawnRate = 800; // Tiempo entre apariciones de elementos (en ms)
+                this.lastSpawnTime = 0;
+                this.approachRate = 2000; // Tiempo que tarda un elemento en llegar al final (en ms)
+                this.audio = document.getElementById('gameSong');
+                this.arrowSequence = [37, 38, 39, 40]; // Teclas de flechas: ←, ↑, →, ↓
+                this.currentArrowIndex = 0;
+            }
+    
+            init() {
+                this.loadSongFromParams();
+                this.updateSongInfo();
+    
+                // Iniciar el juego automáticamente cuando la página se cargue
                 this.startGame();
+    
+                // Actualizar la barra de progreso en tiempo real
+                this.audio.addEventListener('timeupdate', () => {
+                    this.updateProgressBar();
+                });
+    
+                document.addEventListener('keydown', (e) => {
+                    if (this.isGameStarted) {
+                        const key = e.keyCode;
+                        if (this.activeElements.has(key)) {
+                            this.handleKeyPress(key);
+                        }
+                    }
+                });
             }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (!this.isGameStarted) return;
-            const key = e.keyCode;
-            if (this.activeElements.has(key)) {
-                this.handleKeyPress(key);
+    
+            loadSongFromParams() {
+                const params = new URLSearchParams(window.location.search);
+                const songFile = decodeURIComponent(params.get('song'));
+                const songName = decodeURIComponent(params.get('name'));
+                const artist = decodeURIComponent(params.get('artist'));
+    
+                // Actualizar el archivo de música en el elemento audio
+                this.audio.src = `src/PHP/${songFile}`;
+                
+                // Actualizar la información de la canción directamente con los parámetros
+                this.songName.textContent = songName;
+                this.artistName.textContent = artist;
+    
+                // Añadir un evento para cargar la duración cuando el audio esté listo
+                this.audio.addEventListener('loadedmetadata', () => {
+                    const duration = this.formatTime(this.audio.duration);
+                    this.songDuration.textContent = duration;
+                });
             }
-            e.preventDefault(); // Evita el comportamiento predeterminado de las teclas de flecha
-        });
-
-        // Actualizar la barra de progreso en tiempo real
-        this.audio.addEventListener('timeupdate', () => {
-            this.updateProgressBar();
-        });
-    }
-
-    updateSongInfo() {
-        // Aquí puedes cambiar dinámicamente la información de la canción.
-        this.songName.textContent = "Nombre de la canción"; // Puedes cambiar este valor dinámicamente.
-        this.artistName.textContent = "Artista"; // Cambia esto al nombre real del artista.
-        
-        // Una vez que el audio esté cargado, obtenemos la duración.
-        this.audio.addEventListener('loadedmetadata', () => {
-            const duration = this.formatTime(this.audio.duration);
-            this.songDuration.textContent = duration;
-        });
-    }
-
-    formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-        return `${minutes}:${secs}`;
-    }
-
-    // Función para actualizar la barra de progreso
-    updateProgressBar() {
-        const progress = (this.audio.currentTime / this.audio.duration) * 100;
-        this.progressBar.style.width = `${progress}%`;
-    }
-
-    startGame() {
-        this.isGameStarted = true;
-        this.score = 0;
-        this.missCount = 0; // Reiniciar el contador de fallos al iniciar el juego
-        this.startTime = Date.now();
-        this.lastSpawnTime = Date.now();
-
-        // Usar la API multimedia para reproducir la canción
-        this.audio.play();
-
-        // Finalizar el juego cuando termine la canción
-        this.audio.addEventListener('ended', () => {
-            this.endGame();
-        });
-
-        this.gameLoop();
-
-        this.gameStatus.textContent = 'Joc iniciat! Prem les tecles quan els cercles arribin a baix!';
-    }
-
-    gameLoop() {
-        if (!this.isGameStarted) return;
-
-        const currentTime = Date.now();
-
-        // Crear nuevo elemento basado en el spawnRate
-        if (currentTime - this.lastSpawnTime >= this.spawnRate) {
-            this.createVisualElement();
-            this.lastSpawnTime = currentTime;
-        }
-
-        // Actualizar la posición de los elementos, moviéndolos hacia abajo
-        const elements = document.getElementsByClassName('element');
-        for (let element of elements) {
-            const creationTime = parseInt(element.dataset.creationTime);
-            const elapsedTime = currentTime - creationTime;
-            const progress = elapsedTime / this.approachRate;
-
-            if (progress >= 1) {
-                this.missNote(element); // Si se pierde una nota, continúa el juego
-                continue;
+    
+            updateSongInfo() {
+                // Actualización de la información de la canción
             }
-
-            // Actualizar la posición vertical (mover hacia abajo)
-            const startY = 0;
-            const endY = document.getElementById('gameRectangle').offsetHeight - 100; // Posición final en la parte inferior
-            const currentY = startY + (endY - startY) * progress;
-            element.style.top = `${currentY}px`;
-
-            // Actualizar el tamaño del círculo exterior para hacerlo más pequeño a medida que se acerca
-            const outerCircle = element.querySelector('.outer-circle');
-            const scale = 1 + (1 - progress);
-            outerCircle.style.transform = `scale(${scale})`;
-        }
-
-        // Continuar la animación
-        requestAnimationFrame(() => this.gameLoop()); // Aseguramos que el bucle de juego continúe
-    }
-
-    createVisualElement() {
-        const div = document.createElement('div');
-        div.className = 'element';
-        div.dataset.creationTime = Date.now().toString();
-
-        // Crear círculo exterior (approach circle)
-        const outerCircle = document.createElement('div');
-        outerCircle.className = 'outer-circle';
-        
-        // Crear círculo interior (hit circle)
-        const innerCircle = document.createElement('div');
-        innerCircle.className = 'inner-circle';
-
-        const gameRectangle = document.getElementById('gameRectangle');
-
-        // Posicionar en la parte superior del rectángulo (top = 0)
-        const xPos = Math.random() * (gameRectangle.offsetWidth - 100); // Posición horizontal aleatoria
-        div.style.left = `${xPos}px`;
-        div.style.top = `0px`; // Siempre empieza en la parte superior
-
-        // Obtener la siguiente tecla de la secuencia
-        const keyCode = this.arrowSequence[this.currentArrowIndex];
-        const arrows = {37: '←', 38: '↑', 39: '→', 40: '↓'}; // Mapa de teclas a flechas
-
-        innerCircle.textContent = arrows[keyCode];
-        this.activeElements.add(keyCode);
-        div.dataset.keyCode = keyCode;
-
-        div.appendChild(outerCircle);
-        div.appendChild(innerCircle);
-        this.elementsContainer.appendChild(div);
-
-        // Avanzar al siguiente tipo de flecha en la secuencia
-        this.currentArrowIndex = (this.currentArrowIndex + 1) % this.arrowSequence.length;
-    }
-
-    handleKeyPress(keyCode) {
-        const elements = document.getElementsByClassName('element');
-        let foundElement = null;
-
-        // Buscar el elemento correspondiente a la tecla presionada
-        for (let element of elements) {
-            if (parseInt(element.dataset.keyCode) === keyCode) {
-                foundElement = element;
-                break;
+    
+            formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+                return `${minutes}:${secs}`;
+            }
+    
+            updateProgressBar() {
+                const progress = (this.audio.currentTime / this.audio.duration) * 100;
+                this.progressBar.style.width = `${progress}%`;
+            }
+    
+            startGame() {
+                this.isGameStarted = true;
+                this.score = 0;
+                this.missCount = 0;
+                this.startTime = Date.now();
+                this.lastSpawnTime = Date.now();
+    
+                this.audio.play(); // Iniciar la canción
+    
+                this.audio.addEventListener('ended', () => {
+                    this.endGame();
+                });
+    
+                this.gameLoop(); // Iniciar el bucle del juego
+                this.gameStatus.textContent = 'Joc iniciat! Prem les tecles quan els cercles arribin a baix!';
+            }
+    
+            gameLoop() {
+                if (!this.isGameStarted) return;
+    
+                const currentTime = Date.now();
+    
+                // Crear nuevo elemento basado en el spawnRate
+                if (currentTime - this.lastSpawnTime >= this.spawnRate) {
+                    this.createVisualElement();
+                    this.lastSpawnTime = currentTime;
+                }
+    
+                // Actualizar la posición de los elementos, moviéndolos hacia abajo
+                const elements = document.getElementsByClassName('element');
+                for (let element of elements) {
+                    const creationTime = parseInt(element.dataset.creationTime);
+                    const elapsedTime = currentTime - creationTime;
+                    const progress = elapsedTime / this.approachRate;
+    
+                    if (progress >= 1) {
+                        this.missNote(element); // Si se pierde una nota
+                        continue;
+                    }
+    
+                    // Actualizar la posición vertical (mover hacia abajo)
+                    const startY = 0;
+                    const endY = document.getElementById('gameRectangle').offsetHeight - 100;
+                    const currentY = startY + (endY - startY) * progress;
+                    element.style.top = `${currentY}px`;
+    
+                    // Actualizar el tamaño del círculo exterior para hacerlo más pequeño
+                    const outerCircle = element.querySelector('.outer-circle');
+                    const scale = 1 + (1 - progress);
+                    outerCircle.style.transform = `scale(${scale})`;
+                }
+    
+                requestAnimationFrame(() => this.gameLoop());
+            }
+    
+            createVisualElement() {
+                const div = document.createElement('div');
+                div.className = 'element';
+                div.dataset.creationTime = Date.now().toString();
+    
+                // Crear círculo exterior (approach circle)
+                const outerCircle = document.createElement('div');
+                outerCircle.className = 'outer-circle';
+                
+                // Crear círculo interior (hit circle)
+                const innerCircle = document.createElement('div');
+                innerCircle.className = 'inner-circle';
+    
+                const gameRectangle = document.getElementById('gameRectangle');
+    
+                // Posicionar en la parte superior del rectángulo
+                const xPos = Math.random() * (gameRectangle.offsetWidth - 100); // Posición horizontal aleatoria
+                div.style.left = `${xPos}px`;
+                div.style.top = `0px`; // Siempre empieza en la parte superior
+    
+                // Obtener la siguiente tecla de la secuencia
+                const keyCode = this.arrowSequence[this.currentArrowIndex];
+                const arrows = {37: '←', 38: '↑', 39: '→', 40: '↓'}; // Mapa de teclas a flechas
+    
+                innerCircle.textContent = arrows[keyCode];
+                this.activeElements.add(keyCode);
+                div.dataset.keyCode = keyCode;
+    
+                div.appendChild(outerCircle);
+                div.appendChild(innerCircle);
+                this.elementsContainer.appendChild(div);
+    
+                // Avanzar al siguiente tipo de flecha en la secuencia
+                this.currentArrowIndex = (this.currentArrowIndex + 1) % this.arrowSequence.length;
+            }
+    
+            handleKeyPress(keyCode) {
+                const elements = document.getElementsByClassName('element');
+                let foundElement = null;
+    
+                // Buscar el elemento correspondiente a la tecla presionada
+                for (let element of elements) {
+                    if (parseInt(element.dataset.keyCode) === keyCode) {
+                        foundElement = element;
+                        break;
+                    }
+                }
+    
+                if (foundElement) {
+                    // Eliminar la comprobación de distancia, basta con que sea la tecla correcta
+                    this.score += 100; // Ajustar el puntaje
+                    this.showHitFeedback(foundElement);
+                    foundElement.remove();
+                    this.activeElements.delete(keyCode); // Eliminar el elemento activo tras ser acertado
+                }
+            }
+    
+            showHitFeedback(element) {
+                const feedback = document.createElement('div');
+                feedback.className = 'hit-feedback';
+                feedback.textContent = 'Hit!';
+                feedback.style.color = '#00FF00';
+                feedback.style.left = element.style.left;
+                feedback.style.top = element.style.top;
+    
+                this.elementsContainer.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 500);
+    
+                this.gameStatus.textContent = `Puntuació: ${this.score}`;
+            }
+    
+            missNote(element) {
+                const keyCode = parseInt(element.dataset.keyCode);
+                const feedback = document.createElement('div');
+                feedback.className = 'hit-feedback';
+                feedback.textContent = 'Miss';
+                feedback.style.color = '#FF0000';
+                feedback.style.left = element.style.left;
+                feedback.style.top = element.style.top;
+    
+                this.elementsContainer.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 500);
+    
+                element.remove();
+                this.activeElements.delete(keyCode); // Eliminar la flecha activa al fallar
+    
+                // Incrementar el contador de fallos
+                this.missCount++;
+    
+                if (this.missCount >= 3) {
+                    this.endGame();
+                } else {
+                    this.gameStatus.textContent = `Puntuació: ${this.score} | Fallos: ${this.missCount}/3`;
+                }
+            }
+    
+            endGame() {
+                this.isGameStarted = false;
+                this.gameStatus.textContent = `Joc acabat! Puntuació final: ${this.score}. Prem ENTER per tornar a jugar!`;
+                setTimeout(() => {
+                    alert(`Joc acabat! Has aconseguit ${this.score} punts!`);
+                    this.elementsContainer.innerHTML = '';
+                    this.score = 0;
+                    this.missCount = 0;
+                    this.activeElements.clear();
+                }, 100);
             }
         }
-
-        if (foundElement) {
-            // Eliminar la comprobación de distancia, basta con que sea la tecla correcta
-            this.score += 100; // Puedes ajustar el puntaje aquí
-            this.showHitFeedback(foundElement, 1); // Mostrar feedback de acierto
-            foundElement.remove();
-            this.activeElements.delete(keyCode); // Eliminar el elemento activo tras ser acertado
-        }
-    }
-
-    showHitFeedback(element, accuracy) {
-        const feedback = document.createElement('div');
-        feedback.className = 'hit-feedback';
-        feedback.textContent = 'Hit!';
-        feedback.style.color = '#00FF00';
-        feedback.style.left = element.style.left;
-        feedback.style.top = element.style.top;
-
-        this.elementsContainer.appendChild(feedback);
-        setTimeout(() => feedback.remove(), 500);
-
-        this.gameStatus.textContent = `Puntuació: ${this.score}`;
-    }
-
-    missNote(element) {
-        const keyCode = parseInt(element.dataset.keyCode);
-        const feedback = document.createElement('div');
-        feedback.className = 'hit-feedback';
-        feedback.textContent = 'Miss';
-        feedback.style.color = '#FF0000';
-        feedback.style.left = element.style.left;
-        feedback.style.top = element.style.top;
-
-        this.elementsContainer.appendChild(feedback);
-        setTimeout(() => feedback.remove(), 500);
-
-        element.remove();
-        this.activeElements.delete(keyCode); // Asegurarse de eliminar la flecha activa al fallar
-
-        // Incrementar el contador de fallos
-        this.missCount++;
-
-        if (this.missCount >= 3) {
-            // Si falla 3 veces, termina el juego
-            this.endGame();
-        } else {
-            // Si ha fallado 1 o 2 veces, continuar el juego
-            this.gameStatus.textContent = `Puntuació: ${this.score} | Fallos: ${this.missCount}/3`;
-        }
-    }
-
-    endGame() {
-        this.isGameStarted = false;
-        this.gameStatus.textContent = `Joc acabat! Has fallat 3 vegades. Puntuació final: ${this.score}. Prem ENTER per tornar a jugar!`;
-        setTimeout(() => {
-            alert(`Joc acabat! Has aconseguit ${this.score} punts!`);
-            this.elementsContainer.innerHTML = '';
-            this.score = 0;
-            this.missCount = 0; // Reiniciar el contador de fallos
-            this.activeElements.clear();
-            this.currentArrowIndex = 0; // Reiniciar la secuencia al final del juego
-        }, 100);
-    }
-}
-
-// Inicializar el juego al cargar la página
-window.onload = () => {
-    const game = new Game();
-    game.init();
-};
-
+    
+        // Inicializar el juego automáticamente al cargar la página
+        window.onload = () => {
+            const game = new Game();
+            game.init();
+        };
     </script>
+    
     <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
-  </body>
+</body>
 </html>
