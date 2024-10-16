@@ -653,26 +653,27 @@ input::file-selector-button {
 }
 
 /*Css CLASIFICACIONES*/
-   /* Centrando el título y ajustando la tabla */
-.body-ranking{
-    align-items: center;
-}
-
-.titulo{
-    position: relative;
-    display: flex;
+   .container-clasificaciones {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .titulo-clasificaciones {
-    text-align: center;
     color: gold;
-    font-size: 2rem;
+    font-size: 24px;
+    margin-top: 20px;
+    display: flex;
+    position: relative;
 }
 
-/* Ajustando la tabla */
+.tabla-clasificaciones {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1980px;
+}
+
 table {
     width: 100%;
-    margin: 0 20px  20px  0; /* Centrar la tabla */
     border-collapse: collapse;
     font-family: 'Bebas Neue', sans-serif;
 }
@@ -681,7 +682,6 @@ th, td {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: center;
-    color: #ffffff;
 }
 
 th {
@@ -690,11 +690,11 @@ th {
 }
 
 td {
-    background-color: #333333;
+    background-color: #676666;
+    color: white;
 }
 
-.tabla-clasificaciones{
-    max-width: 1400px;
-    width: 100%;
-    margin: 0 35px 0 35px;    
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
 }

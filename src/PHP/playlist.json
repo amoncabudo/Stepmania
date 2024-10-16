@@ -52,5 +52,14 @@
         "archivoMusica": "uploads\/musica\/Trueno - REAL GANGSTA LOVE (Visualizer).mp3",
         "archivoCaratula": "uploads\/caratula\/real gangsta love.jpeg",
         "archivoTexto": null
+    },
+    {
+        "id": "cancion_670f987bde08c9.99519751",
+        "titulo": "Heartbreak Anniversary",
+        "artista": "Giveon",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/Giveon - Heartbreak Anniversary (Official Music Video).mp3",
+        "archivoCaratula": "uploads\/caratula\/heartbreak_anniversary.jpeg",
+        "archivoTexto": null
     }
 ]

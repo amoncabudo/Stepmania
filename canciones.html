@@ -44,73 +44,9 @@
             </form>
         </div>
     </div>
-
-    <script>
-        document.getElementById('song-form').addEventListener('submit', function(event) {
-            const fileInput = document.getElementById('fitxer-txt');
-            const textareaInput = document.getElementById('textarea');
-            const messageDiv = document.getElementById('message');
-
-            let fileUploaded = fileInput.files.length > 0;
-            let textareaFilled = textareaInput.value.trim() !== '';
-
-            // Validar que no se use el archivo y el textarea al mismo tiempo
-            if (fileUploaded && textareaFilled) {
-                event.preventDefault(); // Cancela el envío del formulario
-                messageDiv.textContent = "Error: No puede subir un archivo TXT y rellenar el textarea al mismo tiempo.";
-                messageDiv.style.color = 'red';
-                return;
-            }
-
-            // Validación del archivo TXT
-            if (fileUploaded) {
-                const file = fileInput.files[0];
-                if (!file.name.endsWith('.txt')) {
-                    event.preventDefault(); // Cancela el envío del formulario
-                    messageDiv.textContent = "Error: Solo se permiten archivos TXT.";
-                    messageDiv.style.color = 'red';
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const content = e.target.result;
-                    if (!validarDatos(content)) {
-                        event.preventDefault();
-                        messageDiv.textContent = "Error: El archivo TXT contiene datos inválidos.";
-                        messageDiv.style.color = 'red';
-                    }
-                };
-                reader.readAsText(file);
-            }
-
-            // Validación del textarea
-            if (textareaFilled) {
-                if (!validarDatos(textareaInput.value)) {
-                    event.preventDefault(); // Cancela el envío del formulario
-                    messageDiv.textContent = "Error: Los datos introducidos en el textarea son inválidos.";
-                    messageDiv.style.color = 'red';
-                    return;
-                }
-            }
-        });
-
-        // Función para validar el contenido del TXT o del textarea
-        function validarDatos(content) {
-            const lines = content.trim().split('\n');
-
-            for (let line of lines) {
-                const [instantInicial, instantFinal] = line.split(',').map(Number);
-
-                // Verificar que los instantes sean números válidos y que el instante inicial sea menor que el instante final
-                if (isNaN(instantInicial) || isNaN(instantFinal) || instantInicial < 0 || instantFinal < 0 || instantInicial >= instantFinal) {
-                    return false; // Datos inválidos
-                }
-            }
-            return true; // Todos los datos son válidos
-        }
-    </script>
-       
+    
+    <script src="src/JS/main.js" defer></script>
+    <script src="src/JS/main.js"></script>
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 
 </body>

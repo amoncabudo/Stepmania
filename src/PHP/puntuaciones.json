@@ -13,5 +13,10 @@
         "nombre": "arnau",
         "puntuacion": 5700,
         "fecha": "2024-10-15 16:20:55"
+    },
+    {
+        "nombre": "alex2",
+        "puntuacion": 4650,
+        "fecha": "2024-10-16 07:10:03"
     }
 ]

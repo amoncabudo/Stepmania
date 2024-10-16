@@ -13,9 +13,7 @@
         <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
     </header>
 
-    <div class="titulo">
-        <h1 class="titulo-clasificaciones">TABLA DE CLASIFICACIONES</h1>
-
+        <h6 class="titulo-clasificaciones">TABLA DE CLASIFICIACIONES</h6>
     </div>
 
     <div class="tabla-clasificaciones">
@@ -34,64 +32,8 @@
         </tbody>
     </table>
     </div>
-    <script>
-        async function loadRanking() {
-            try {
-                const response = await fetch('/src/PHP/puntuaciones.json');
-                if (!response.ok) {
-                    throw new Error('Error al cargar el archivo JSON');
-                }
 
-                const ranking = await response.json();
-                const rankingBody = document.getElementById('rankingBody');
-                ranking.sort((a, b) => b.score - a.score);
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const currentPlayer = urlParams.get('nombre');
-                const currentScore = parseInt(urlParams.get('puntuacion'));
-
-                ranking.forEach((player, index) => {
-                    const row = document.createElement('tr');
-
-                    let rankingText;
-                    if (index === 0) {
-                        rankingText = `<span style="color: gold;">1</span>`; // Número 1 en oro
-                    } else {
-                        rankingText = index + 1;
-                    }
-
-
-                    row.innerHTML = `
-                        <td>${rankingText}</td>
-                        <td>${player.nombre}</td>
-                        <td>${player.puntuacion}</td>
-                        <td>${player.fecha}</td>
-
-                    `;
-
-                    if (player.name === currentPlayer && player.score === currentScore) {
-                        row.classList.add('highlight');
-                    }
-
-                    rankingBody.appendChild(row);
-                });
-
-                if (ranking.length === 0) {
-                    const noPlayersRow = document.createElement('tr');
-                    noPlayersRow.innerHTML = `<td colspan="3">No hay jugadores en el ranking</td>`;
-                    rankingBody.appendChild(noPlayersRow);
-                }
-
-            } catch (error) {
-                console.error('Error al cargar el ranking:', error);
-            }
-        }
-    
-        document.addEventListener('DOMContentLoaded', () => {
-            loadRanking();
-            loadTopRanking();
-        });
-    </script>
+    <script src="src/JS/main.js" defer></script>
     <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
 
