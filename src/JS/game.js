@@ -1,6 +1,7 @@
 class Game {
+    /*Declaracion de variables*/
     constructor() {
-        this.playerName = ''; // Nuevo campo para el nombre del jugador
+        this.playerName = ''; 
         this.elements = [];
         this.activeElements = new Set();
         this.score = 0;
@@ -24,7 +25,7 @@ class Game {
         // Escuchar teclas en cualquier parte del juego
         document.addEventListener('keydown', (e) => this.handleKeyPress(e.keyCode));
     }
-
+    /*Cargar juego, darle al enter para iniciar y preguntar nombre */
     init() {
         this.loadSongFromParams();
         this.updateSongInfo();
@@ -39,14 +40,14 @@ class Game {
             this.updateProgressBar();
         });
     }
-
+    /*Cargar cancion en el juego */
     loadSongFromParams() {
         const params = new URLSearchParams(window.location.search);
         const songFile = decodeURIComponent(params.get('song'));
         const songName = decodeURIComponent(params.get('name'));
         const artist = decodeURIComponent(params.get('artist'));
 
-        this.audio.src = `src/PHP/${songFile}`;
+        this.audio.src = `src/c/${songFile}`;
         this.songName.textContent = songName;
         this.artistName.textContent = artist;
 
@@ -58,26 +59,29 @@ class Game {
 
     updateSongInfo() {}
 
+    /*Mostrar formato del tiempo */
     formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
         return `${minutes}:${secs}`;
     }
-
+    /*Actualizar barra de progreso de la cancion */
     updateProgressBar() {
         const progress = (this.audio.currentTime / this.audio.duration) * 100;
         this.progressBar.style.width = `${progress}%`;
     }
 
+    /*Preguntar el nombre del usuario antes de empezar el juego, una vez introducido empieza el juego */
     askPlayerName() {
         this.playerName = prompt('Introduce tu nombre para comenzar el juego:');
         if (this.playerName) {
-            this.startGame(); // Comenzar el juego una vez se ha dado el nombre
+            this.startGame(); 
         } else {
             alert('Por favor, introduce un nombre válido.');
         }
     }
 
+    /*Inicia el juego con los siguientes valores */
     startGame() {
         this.isGameStarted = true;
         this.score = 0;
@@ -96,7 +100,7 @@ class Game {
         this.gameLoop();
         this.gameStatus.textContent = `Joc iniciat per ${this.playerName}! Prem les tecles quan els cercles arribin a baix!`;
     }
-
+    /*Bucle para empezar o terminar el juego */
     gameLoop() {
         if (!this.isGameStarted) return;
 
@@ -131,7 +135,7 @@ class Game {
 
         requestAnimationFrame(() => this.gameLoop());
     }
-
+    /* Crear un nuevo elemento visual en el juego */
     createVisualElement() {
         const div = document.createElement('div');
         div.className = 'element';
@@ -175,6 +179,7 @@ class Game {
                 break;
             }
         }
+        // Buscar el elemento que coincide con la tecla presionada
 
         if (foundElement) {
             this.correctHits++;
@@ -188,7 +193,7 @@ class Game {
 
         this.gameStatus.textContent = `Puntuació: ${this.score}`;
     }
-
+    /* Manejar una nota fallada */
     missNote(element) {
         if (element) {
             element.remove();
@@ -205,7 +210,7 @@ class Game {
             puntuacion: this.score
         };
 
-        fetch('src/PHP/guardar_puntuacion.php', {
+        fetch('src/php/guardar_puntuacion.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -235,20 +240,19 @@ class Game {
         }
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
-
+    /*Funcion para terminar el juego (Guarda la puntuacion, la muestra, y te reenvia al html listarcanciones con 1 segundo de retraso) */
     endGame() {
         this.isGameStarted = false;
 
-        this.saveScore(); // Guardar la puntuación antes de terminar
+        this.saveScore(); 
 
-        this.gameStatus.textContent = `Joc acabat! Puntuació final: ${this.score}.`;
+        this.gameStatus.textContent = `Joc acabat! Puntuació final: ${this.score}. Redirigint a la playlist...`;
         setTimeout(() => {
             alert(`Joc acabat! Has aconseguit ${this.score} punts!`);
-            this.elementsContainer.innerHTML = '';
-            this.resetGame();
-        }, 100);
+            window.location.href = 'listarcanciones.html'; 
+        }, 1000); 
     }
-
+    /*Reinicio del juego */
     resetGame() {
         this.score = 0;
         this.correctHits = 0;

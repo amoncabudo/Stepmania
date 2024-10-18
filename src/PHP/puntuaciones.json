@@ -18,5 +18,20 @@
         "nombre": "alex2",
         "puntuacion": 4650,
         "fecha": "2024-10-16 07:10:03"
+    },
+    {
+        "nombre": "prueba",
+        "puntuacion": 5600,
+        "fecha": "2024-10-16 13:09:23"
+    },
+    {
+        "nombre": "SIU",
+        "puntuacion": -5350,
+        "fecha": "2024-10-17 16:56:09"
+    },
+    {
+        "nombre": "AA",
+        "puntuacion": -6050,
+        "fecha": "2024-10-17 16:58:24"
     }
 ]

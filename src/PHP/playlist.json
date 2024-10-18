@@ -4,7 +4,7 @@
         "titulo": "VIBEZ",
         "artista": "KHEA",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/KHEA, Awesome Pierre - VIBEZ (Visualizer).mp3",
+        "archivoMusica": "uploads\/musica\/KHEAAwesomePierre-VIBEZ(Visualizer).mp3",
         "archivoCaratula": "uploads\/caratulas\/vibrz.jpeg",
         "archivoTexto": null
     },
@@ -13,8 +13,8 @@
         "titulo": "SHINRA TENSEI",
         "artista": "SKXRZ",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/SHINRA TENSEI.mp3",
-        "archivoCaratula": "uploads\/caratula\/shinra tensei.jpeg",
+        "archivoMusica": "uploads\/musica\/shinratensei.mp3",
+        "archivoCaratula": "uploads\/caratulas\/shinra tensei.jpeg",
         "archivoTexto": null
     },
     {
@@ -22,8 +22,8 @@
         "titulo": "Q U E V A S A H A C E R H O Y ?",
         "artista": "Omar Courtz x De La Rose",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/download.mp3",
-        "archivoCaratula": "uploads\/caratula\/qevasahacerhoy.jpeg",
+        "archivoMusica": "uploads\/musica\/quevasahacerhoy.mp3",
+        "archivoCaratula": "uploads\/caratulas\/qevasahacerhoy.jpeg",
         "archivoTexto": null
     },
     {
@@ -31,8 +31,8 @@
         "titulo": "Watch This - ARIZONATEARS Pluggnb ",
         "artista": "Lil Uzi Vert, speed up nightcore, ARIZONATEARS",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Lil Uzi Vert - Watch This (ARIZONATEARS Pluggnb Remix) Lyrics.mp3",
-        "archivoCaratula": "uploads\/caratula\/watch this.jpeg",
+        "archivoMusica": "uploads\/musica\/LilUziVert-WatchThis(ARIZONATEARSPluggnbRemix)Lyrics.mp3",
+        "archivoCaratula": "uploads\/caratulas\/watch this.jpeg",
         "archivoTexto": null
     },
     {
@@ -40,8 +40,8 @@
         "titulo": "Fall Back",
         "artista": "Lithe Ft Lil Tjay",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Lithe - Fall Back ft. Lil Tjay.mp3",
-        "archivoCaratula": "uploads\/caratula\/fallback.jpg",
+        "archivoMusica": "uploads\/musica\/Lithe-Fall_Back_ft_LilTjay.mp3",
+        "archivoCaratula": "uploads\/caratulas\/fallback.jpg",
         "archivoTexto": null
     },
     {
@@ -49,8 +49,8 @@
         "titulo": "REAL GANGSTA LOVE",
         "artista": "Trueno",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Trueno - REAL GANGSTA LOVE (Visualizer).mp3",
-        "archivoCaratula": "uploads\/caratula\/real gangsta love.jpeg",
+        "archivoMusica": "uploads\/musica\/Trueno-REALGANGSTALOVE(Visualizer).mp3",
+        "archivoCaratula": "uploads\/caratulas\/real gangsta love.jpeg",
         "archivoTexto": null
     },
     {
@@ -58,8 +58,17 @@
         "titulo": "Heartbreak Anniversary",
         "artista": "Giveon",
         "descripcion": null,
-        "archivoMusica": "uploads\/musica\/Giveon - Heartbreak Anniversary (Official Music Video).mp3",
-        "archivoCaratula": "uploads\/caratula\/heartbreak_anniversary.jpeg",
+        "archivoMusica": "uploads\/musica\/Giveon-HeartbreakAnniversary(OfficialMusicVideo).mp3",
+        "archivoCaratula": "uploads\/caratulas\/heartbreak_anniversary.jpeg",
+        "archivoTexto": null
+    },
+    {
+        "id": "cancion_670fc87eddc620.20442611",
+        "titulo": "GANG",
+        "artista": "Kairo Keyz",
+        "descripcion": null,
+        "archivoMusica": "uploads\/musica\/KairoKeyz-GANG(OfficialVideo).mp3",
+        "archivoCaratula": "uploads\/caratulas\/gang_kairokeyz.jpg",
         "archivoTexto": null
     }
 ]

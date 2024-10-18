@@ -1,29 +1,31 @@
 document.addEventListener('DOMContentLoaded', function () {
     const pagePath = window.location.pathname;
 
-    // Para la página de edición de canciones
+    // Si la pagina de editar canciones
     if (pagePath.includes('editarcanciones.html')) {
         const urlParams = new URLSearchParams(window.location.search);
         const songId = urlParams.get('id');
 
         if (songId) {
-            fetch('src/PHP/playlist.json')
+            // Cargar la información de la canción desde playlist.json
+            fetch('src/php/playlist.json')
                 .then(response => response.json())
                 .then(data => {
                     const cancion = data.find(song => song.id === songId);
                     if (cancion) {
+                        // Cargar la información de la canción en el formulario
                         document.getElementById('songId').value = cancion.id;
                         document.getElementById('titulo').value = cancion.titulo;
                         document.getElementById('artista').value = cancion.artista;
 
                         // Mostrar la carátula actual
                         if (cancion.archivoCaratula) {
-                            document.getElementById('caratulaPreview').src = `../PHP/${cancion.archivoCaratula}`;
+                            document.getElementById('caratulaPreview').src = `src/php/${cancion.archivoCaratula}`;
                         }
 
                         // Configurar el audio actual
                         if (cancion.archivoMusica) {
-                            document.getElementById('audioPreview').src = `../PHP/${cancion.archivoMusica}`;
+                            document.getElementById('audioPreview').src = `../php/${cancion.archivoMusica}`;
                         }
                     }
                 })
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const formData = new FormData(this);
 
-            fetch('src/PHP/editarcanciones.php', {
+            fetch('src/php/editarcanciones.php', {
                 method: 'POST',
                 body: formData
             })
@@ -141,15 +143,15 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    // Para la página de ranking
+    // Si la pagina de clasificaciones
     if (pagePath.includes('clasificaciones.html')) {
         loadRanking();
     }
 
-    // Cargar ranking desde puntuaciones.json
+    // Cargar clasificaciones desde puntuaciones.json
     async function loadRanking() {
         try {
-            const response = await fetch('/src/PHP/puntuaciones.json');
+            const response = await fetch('/src/php/puntuaciones.json');
             if (!response.ok) {
                 throw new Error('Error al cargar el archivo JSON');
             }
@@ -188,9 +190,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Para la página de playlist (listarcanciones.html)
+    // Si la página de playlist (listarcanciones.html)
     if (pagePath.includes('listarcanciones.html')) {
-        fetch('src/PHP/playlist.json')
+        fetch('src/php/playlist.json')
             .then(response => response.json())
             .then(data => {
                 const songList = document.getElementById('songList');
@@ -204,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const songItem = document.createElement('div');
                     songItem.classList.add('play-song-item');
-                    const caratulaPath = 'src/PHP/' + cancion.archivoCaratula;
+                    const caratulaPath = 'src/php/' + cancion.archivoCaratula;
 
                     songItem.style.backgroundImage = `url('${caratulaPath}')`;
 
@@ -257,14 +259,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para eliminar una canción
     function eliminarCancion(id) {
-        fetch(`src/PHP/eliminar_cancion.php?id=${id}`, {
+        fetch(`src/php/eliminar_cancion.php?id=${id}`, {
             method: 'DELETE',
         })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert('Canción eliminada exitosamente');
-                    location.reload(); // Recargar la página para reflejar los cambios
+                    location.reload(); 
                 } else {
                     alert('Error al eliminar la canción');
                 }
@@ -272,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error:', error));
     }
 });
-
+/*Funcion para reenviar al usuario a la pagina play.html con la informacion guardada */
 function playSong(archivoMusica, titulo, artista) {
     const gameUrl = `play.html?song=${encodeURIComponent(archivoMusica)}&name=${encodeURIComponent(titulo)}&artist=${encodeURIComponent(artista)}`;
     window.location.href = gameUrl;

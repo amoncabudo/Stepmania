@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clasificaciones</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="src/CSS/style.css">
+    <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body class="body-ranking">
     <header class="header">
@@ -13,27 +13,28 @@
         <a href="index.html" class="home-button"><ion-icon name="home"></ion-icon></a>
     </header>
 
-        <h6 class="titulo-clasificaciones">TABLA DE CLASIFICIACIONES</h6>
+    <div class="container-clasificaciones">
+        <div class="titulo-container">
+            <h1 class="titulo-clasificaciones">TABLA DE CLASIFICACIONES</h1>
+        </div>
+        
+        <div class="tabla-clasificaciones">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Nombre</th>
+                        <th>Puntuación</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingBody">
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="tabla-clasificaciones">
-    <table>
-        <thead>
-            <tr>
-                <th>Posición</th>
-                <th>Nombre</th>
-                <th>Puntuación</th>
-                <th>Fecha</th>
-
-            </tr>
-        </thead>
-        <tbody id="rankingBody">
-            <!-- Aquí se cargará dinámicamente el ranking -->
-        </tbody>
-    </table>
-    </div>
-
-    <script src="src/JS/main.js" defer></script>
+    <script src="src/js/main.js" defer></script>
     <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
 

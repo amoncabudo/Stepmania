@@ -71,13 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Crear la nueva entrada de canción con ID único
         $nueva_cancion = array(
-            'id' => $id,  // Añadir el ID único
+            'id' => $id,  
             'titulo' => $titulo,
             'artista' => $artista,
-            'descripcion' => $descripcion, // Esto también se guarda en el JSON por si acaso
+            'descripcion' => $descripcion, 
             'archivoMusica' => $musica_file,
             'archivoCaratula' => $caratula_file,
-            'archivoTexto' => $text_file // Guardar el archivo de texto (subido o creado)
+            'archivoTexto' => $text_file 
         );
 
         // Añadir la nueva canción al array de canciones
